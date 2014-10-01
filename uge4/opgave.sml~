@@ -1,0 +1,95 @@
+load "Int";
+
+datatype pitchclass = C | Cis | D | Dis | E | F | Fis
+                      | G | Gis | A | Ais | B;
+type octave = int;
+type pitch = pitchclass * octave;
+type duration = int;
+datatype music = Note of duration * pitch
+               | Rest of duration;
+type melody = music list;
+
+(* 4G1 *)
+fun pitchclassToText C = "c"
+  | pitchclassToText Cis = "cis"
+  | pitchclassToText D = "d"
+  | pitchclassToText Dis = "dis"
+  | pitchclassToText E = "e"
+  | pitchclassToText F = "f"
+  | pitchclassToText Fis = "fis"
+  | pitchclassToText G = "g"
+  | pitchclassToText Gis = "gis"
+  | pitchclassToText A = "a"
+  | pitchclassToText Ais = "ais"
+  | pitchclassToText B = "b";
+
+fun musicToString (Rest d) = "r"^Int.toString d
+  | musicToString (Note (d, (p, oc))) =
+    let
+        fun mark (_, 0) = ""
+          | mark (ch, n) = ch ^ mark (ch, n-1)
+        fun mkSpace oct = if oct > 0 then mark("'", oct)
+                          else mark(",", ~oct)
+    in
+        (pitchclassToText p) ^ mkSpace(oc) ^ (Int.toString d)
+    end;
+
+musicToString (Rest 5);
+musicToString (Note (4, (Fis, 3)));
+musicToString (Note (4, (Fis, ~2)));
+
+(* 4G2 *)
+fun melodyToString (frste::liste) =
+    foldl (fn (ny, gammel) => gammel ^ " " ^ musicToString(ny))
+          (musicToString frste) liste;
+
+melodyToString
+    [Note (16, (A, 0)), Note (16, (B, 0)), Note (4, (C, 1)), Note (8, (C, 1))];
+
+(* 4G3 *)
+type abspitch = int;
+
+fun noteToPitch C = 0
+  | noteToPitch Cis = 1
+  | noteToPitch D = 2
+  | noteToPitch Dis = 3
+  | noteToPitch E = 4
+  | noteToPitch F = 5
+  | noteToPitch Fis = 6
+  | noteToPitch G = 7
+  | noteToPitch Gis = 8
+  | noteToPitch A = 9
+  | noteToPitch Ais = 10
+  | noteToPitch B = 11;
+
+fun absolutePitch (a, b) = noteToPitch(a) + 12 * b;
+
+absolutePitch(A, ~1);
+absolutePitch(G, 1);
+absolutePitch(C, ~2);
+
+(* 4G4 *)
+fun pitchToNote 0 = C
+  | pitchToNote 1 = Cis
+  | pitchToNote 2 = D
+  | pitchToNote 3 = Dis
+  | pitchToNote 4 = E
+  | pitchToNote 5 = F
+  | pitchToNote 6 = Fis
+  | pitchToNote 7 = G
+  | pitchToNote 8 = Gis
+  | pitchToNote 9 = A
+  | pitchToNote 10 = Ais
+  | pitchToNote 11 = B
+  | pitchToNote _ = raise Domain;
+
+fun pitch (ap) =
+    let
+        val p = ap mod 12
+    in
+        (pitchToNote p, p - 10)
+    end;
+
+pitch (~3);
+absolutePitch(A, ~1);
+(* 4G5 *)

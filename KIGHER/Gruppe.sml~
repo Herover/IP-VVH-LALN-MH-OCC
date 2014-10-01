@@ -1,0 +1,109 @@
+(*Gruppe afl uge 2*)
+(*Lavet af Victor, Leon og Mirza*)
+
+
+(*Filer vedhæftes til programmet*)
+use "uge2_distance.sml";
+use "uge2_cphmarathon2014.sml";
+
+(*2G1*)
+(*
+* Funktionen finder afstanden mellem et element i og et element i+1
+* op til et element n, hvor den adderer alle afstandene.
+* Vi får en afrundingsfejl på 10E~11 mellem den forventede afstand
+* og den afstand vi får, hvilket er forventet 
+*)
+
+fun totalDistance [] = raise Empty
+ | totalDistance [_] = 0.0
+ | totalDistance (x :: xs) = distance(x, List.nth(xs, 0)) + totalDistance xs; 
+totalDistance cphMarathon2014 ;
+totalDistance cphMarathon2014 - 42.9686446838;
+
+
+(*2G2*)
+
+use "uge2_dhl2014.sml";
+
+(*
+* Grundet til at vi har speeds [_] skyldes at hvis der kun er et element i 
+* skal man få en om liste, da der ikke kan findes en afstand mellem 1 punkt.
+* Da vi ikke ved hvad outputtet skal være, kan vi ikke foretage nogen
+* true | false test. Men vi kan se på værdien og afgøre om de ser realistiske
+* ud for hvad der er muligt at løbe.
+*)
+
+fun speeds [] = raise Empty
+ | speeds [_] = []
+ | speeds (x :: xs) = 
+  let val (a, b) = x
+      val (c, d) = List.nth(xs, 0) 
+  in [distance(a, c) / (real((d-b)) / (1000.0*3600.0))]@speeds xs   
+  end; 
+  
+speeds dhl2014;
+ 
+
+ 
+ 
+ 
+ 
+(*2G3*)
+
+(*
+* vi finder summen af alle tallene og dividerer med længden af listen
+* vi får en gennemsnitshastighed på 15 km/t hvilket er realistisk
+*)
+
+
+fun avg xs = 
+ let fun sum [] = 0.0
+  | sum (x :: xs) = x + sum xs
+ in (sum xs) /  real (length xs)
+ end;
+
+avg(speeds(dhl2014));
+
+
+(*2G4*)
+
+(*
+* LEON kan du ikke lige kigge på det med val test. Man kunne skrive : false
+* Kan ikke lige huske hvordan!! :O
+*)
+
+fun averageSpeed [] = raise Empty
+ | averageSpeed [_] = raise Domain 
+ | averageSpeed n = avg(speeds(n));
+
+averageSpeed(dhl2014);
+
+val test_avgspeeds01 = averageSpeed([]) = Empty ;
+val test_avgspeeds02 = averageSpeed([((55.700401, 12.570336), 1019292)]) = Domain;
+
+
+(*2G5*)
+(*
+* Funktion gør ikke det, der er krævet af den. I første omgang tager den en 
+* string * int -> string og int * int -> string. Når man tester funktionen
+* giver den, det forventede output ud.
+*
+* Funktionen er ikke skrevet på en pæn og læselig måde.
+* Personen skriver åbenlys kode og vælger at indsæte kommenterer inde i koden.
+* Man kunne næsten også sige at personen overkommenterer.
+* Der er linier på over 80 tegn, uden at der bliver lavet mellemrum. 
+* Personen burde opdele lange eklæringer på flere linier. 
+* Det som personen gør med kommentar, er hvad koden gør, men det behøves ikke
+* da man skal antage at afleveringen er til en som kan SML.
+* Hvis man giver funktionen et input "rightAlign(~17,2)" får man overflow
+* dette skyldes at personen antager s = w, men burde have skrevet s >= w.
+* Navngivningen er fornuftigt. Måske kunne man have skrevet rightAlignH i stedet
+* for rightAlignHelper.
+*
+* Afprøvningen tester ikke alle relavante tilfælde, da personen ikke har taget
+* højde for hvad der sker hvis man har flere tegn end givet længde. 
+* Programkoden vil give error overflow.
+*)
+
+ 
+ 

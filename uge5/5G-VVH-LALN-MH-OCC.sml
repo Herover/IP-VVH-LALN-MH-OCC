@@ -1,7 +1,8 @@
 use "InstagraML.sml";
 use "Effects.sml";
+structure I = InstagraML;
 
-(* 5I1 *)
+(* 5G1 *)
 type point = real * real
 datatype 'col figure
   = Circle of 'col * point * real
@@ -20,7 +21,7 @@ fun toRGB Black   = (0, 0, 0)
   | toRGB Cyan    = (0, 255, 255)
   | toRGB Magenta = (255, 0, 255);
 
-(* 5I2 *)
+(* 5G2 *)
 fun reColour fig f =
     let fun unPack (Over(a, b)) =
             Over(unPack(a), unPack(b))
@@ -60,7 +61,7 @@ val reColour_test2 =
 val reColour_test3 = reColour (Circle(Blue, (0.0, 0.0), 2.0)) toRGB
                      = Circle((0, 0, 255), (0.0, 0.0), 2.0);
 
-(* 5I3 *)
+(* 5G3 *)
 
 
 fun isIn (Circle (c, (cx, cy), r)) (x, y) =
@@ -84,3 +85,48 @@ val redCircleOverBlueSquare =
 
 val colourOf_test = colourOf redCircleOverBlueSquare (0.0, 0.0) = SOME Red;
 val colourOf_test2 = colourOf redCircleOverBlueSquare (3.0, 0.0) = NONE;
+
+(* 5G4 *)
+
+fun hasAColour fig p =
+    if colourOf fig p = NONE then false else true;
+
+val hasAColour_test = hasAColour redCircleOverBlueSquare (0.0, 0.0) = true;
+val hasAColour_test2 = hasAColour redCircleOverBlueSquare (3.0, 0.0) = false;
+
+(* 5G5 *)
+fun hasAColour2 fig p =
+    if colourOf2 fig p = NONE then false else true
+
+and colourOf2 (Over(a, b)) p =
+    if hasAColour2 a p then colourOf2 a p else colourOf2 b p
+  | colourOf2 (Circle(c, xy, r)) p =
+    if isIn (Circle(c, xy, r)) p then SOME c else NONE
+  | colourOf2 (Rectangle(c, xy1, xy2)) p =
+    if isIn (Rectangle(c, xy1, xy2)) p then SOME c else NONE;
+
+val colourOf2_test = colourOf2 redCircleOverBlueSquare (0.0, 0.0) = SOME Red;
+val colourOf2_test2 = colourOf2 redCircleOverBlueSquare (3.0, 0.0) = NONE;
+val hasAColour2_test = hasAColour redCircleOverBlueSquare (0.0, 0.0) = true;
+val hasAColour2_test2 = hasAColour redCircleOverBlueSquare (3.0, 0.0) = false;
+
+(* 5G6 *)
+
+fun toInstagraML (fig, (px, py), b, h, s) =
+    I.fromFunction (b, h, fn (x, y) =>
+                             case
+                               colourOf fig (px + (real x) * s,
+                                             py + (real  y) * s)
+                              of
+                                 SOME c => valOf(SOME c)
+                               | NONE => (255, 255, 255));
+
+val circ = Circle((255, 0, 0), (50.0, 50.0), 50.0);
+
+val torben = toInstagraML (circ, (50.0, 50.0), 100, 100, 2.0);
+
+I.writeBMP ("torben.BMP", torben);
+
+
+
+

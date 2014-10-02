@@ -17,5 +17,7 @@ fun toRGB Black   = (0,0,0)
   | toRGB Yellow  = (255,255,0)
   | toRGB Cyan    = (0,255,255)
   | toRGB Magenta = (255,0,255);
+  
+(* test *)  
 
 

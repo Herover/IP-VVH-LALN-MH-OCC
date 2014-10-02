@@ -10,7 +10,7 @@ datatype 'col figure
 
 datatype primaryColours = Black | Red | Green | Blue
                           | White | Cyan | Magenta | Yellow;
-(* 1G5 *)
+(* 5G1 *)
 (*
  * Konverterer datatypen primaryColours til rgb farvesæt som InstagraML kan
  * forstå.

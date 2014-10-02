@@ -14,7 +14,7 @@ datatype primaryColours = Black | Red | Green | Blue
 (*
  * Konverterer datatypen primaryColours til rgb farvesæt som InstagraML kan
  * forstå.
-*)
+ *)
 fun toRGB Black   = (0, 0, 0)
   | toRGB White   = (255, 255, 255)
   | toRGB Red     = (255, 0, 0)
@@ -29,7 +29,7 @@ val toRGB_test1 = toRGB Red = (255, 0, 0);
 (* 5G2 *)
 (*
  * Tager en figur og omdanner dens farver til rgb format.
-*)
+ *)
 fun reColour fig f =
     let fun unPack (Over(a, b)) =
             Over(unPack(a), unPack(b))
@@ -39,10 +39,8 @@ fun reColour fig f =
             Circle(f col, a, b)
     in unPack fig end;
 
+(* vi tester om farven er blevet skiftet ud med en RBG værdi *)
 
-(* reColour test:
-*
-*)
 val fig1 = Over(Circle (Yellow, (0.0, 0.0), 1.8),
                   Over(Circle(Magenta, (0.0, 1.0), 2.0),
                        Rectangle(Black, (3.0, 5.0), (3.0, 4.0))));
@@ -74,14 +72,12 @@ val reColour_test3 = reColour (Circle(Blue, (0.0, 0.0), 2.0)) toRGB
  * Skaffer farven fra en firgur, ud fra et punkt.
  * Vi bruger en tilpasset funktion fra forelæsningen 29' 09 til at undersøge om
  * der findes en figur.
- * Det var ikke specificeret helt precist i opgaveformuleringen hvordan
- * rækkefølgen på figurerne skal vises, så vi har bestemt at tjekke neded mod
- * venstre side først. Dvs. figurer højest i venstre side af træet ligger
- * forrest på billedet.
+ * vi kører igennem vores Over værdier og laver derved et binært træ,
+ * hvori den ligger figurerne fra venstre oven på figurerne fra højre.
  * Der gives NONE hvis der ikke er en farve. Dette er smart fordi at den som
  * kalder funktionen selv kan bestemme hvad der skal ske med farven uden for
  * figuren.
-*)
+ *)
 
 fun isIn (Circle (c, (cx, cy), r)) (x, y) =
     (x-cx)*(x-cx) + (y-cy)*(y-cy) <= r*r
@@ -108,7 +104,7 @@ val colourOf_test2 = colourOf redCircleOverBlueSquare (3.0, 0.0) = NONE;
 (* 5G4 *)
 (*
  * Retunerer om der er en farve eller ej på et givet punkt.
-*)
+ *)
 fun hasAColour fig p =
     if colourOf fig p = NONE then false else true;
 
@@ -119,7 +115,7 @@ val hasAColour_test2 = hasAColour redCircleOverBlueSquare (3.0, 0.0) = false;
 (*
  * Genskrivning af hasAColour og colourOf for at gøre dem gensidigt rekursive.
  * Det giver ingen mening.
-*)
+ *)
 fun hasAColour2 fig p =
     if colourOf2 fig p = NONE then false else true
 
@@ -139,7 +135,7 @@ val hasAColour2_test2 = hasAColour redCircleOverBlueSquare (3.0, 0.0) = false;
 (*
  * Lav en figur om til et InstagraML billede.
  * Vi definerer at områder uden for den givne figur skal blive hvide.
-*)
+ *)
 fun toInstagraML (fig, (px, py), b, h, s) =
     I.fromFunction (b, h, fn (x, y) =>
                              case
@@ -149,6 +145,31 @@ fun toInstagraML (fig, (px, py), b, h, s) =
                                  SOME c => valOf(SOME c)
                                | NONE => (255, 255, 255));
 
+(*
+ * Vi printer billedet ud og inspicerer om billedet lever op til vores
+ * forventninger.
+ *)
+
 val circ = Circle((255, 0, 0), (50.0, 50.0), 50.0);
-val torben = toInstagraML (circ, (50.0, 50.0), 100, 100, 2.0);
-I.writeBMP ("torben.BMP", torben);
+
+(* vi forventer en stor cirkel der fylder billedet ud *)
+val toInstagraML_test1 = toInstagraML (circ, (0.0, 0.0), 100, 100, 1.0);
+I.writeBMP ("toInstagraML_test1.BMP", toInstagraML_test1);
+
+(* vi forventer en lille cirkel i venstre hjørne *)
+val toInstagraML_test2 = toInstagraML (circ, (0.0, 0.0), 100, 100, 2.0);
+I.writeBMP ("toInstagraML_test2.BMP", toInstagraML_test2);
+
+(* vi forventer en cirkel med samme størrelse som i test1, som har midtpunkt
+ * i venstre hjørne
+ *)
+val toInstagraML_test3 = toInstagraML (circ, (50.0, 50.0), 100, 100, 1.0);
+I.writeBMP ("toInstagraML_test3.BMP", toInstagraML_test3);
+
+(* vi forventer en cirkel med samme størrelse som i test2 som har midtpunkt
+ * i venstre hjørne
+ *)
+val toInstagraML_test4 = toInstagraML (circ, (50.0, 50.0), 100, 100, 2.0);
+I.writeBMP ("toInstagraML_test4.BMP", toInstagraML_test4);
+
+(* vi kan ved visuel inspektion konkluderer at funktionen virker *)

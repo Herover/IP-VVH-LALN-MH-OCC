@@ -52,6 +52,12 @@ fun modifySudoku sudokuState (r, s, c) =
 modifySudoku sudoku_tilstand (0, 2, #"7");
 
 (* 6G4 *)
+(*
+ * listLooper bruger vi til at loope igennem listerne og checke hvilken række,
+ * vi er på, vi kalder så charLooper som looper igennem en liste.
+ * alle elementer der passer på charLooper og listLooper kriterierne
+ * bliver så tilføjet til en liste.
+ *)
 
 fun regionList sudokuState q =
     let
@@ -76,7 +82,12 @@ val regionList_test = regionList sudoku_tilstand 3 =
                  [#"8", #"*", #"*", #"4", #"*", #"*", #"7", #"*", #"*"];
 
 (* 6G5 *)
-
+(*
+ * funktionen input bruger vi til at tage input, og sørger for det er
+ * rigtig formateret. funktionen fileChooser returnerer en sudoku tilstand
+ * hvorefter vi så anvender playGame til at blive ved med at prompte brugeren
+ * for input og få dem til at udfylde spillet.
+ *)
 fun playSudoku () =
     (print ("Welcome to the sudoku game!\n" ^
             "Please type the name of a sudoku file\n");
@@ -100,7 +111,7 @@ fun playSudoku () =
 
        fun playGame state =
            (print ("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" ^
-                  "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                  "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             showSudoku state;
            let val inp = String.tokens (fn x => x = #" ") (input())
                val (r, s, c) =
@@ -110,7 +121,7 @@ fun playSudoku () =
                    handle _ => (print "try again\n"; playGame state)
            in playGame(modifySudoku state (r, s, c)) end)
      in
-       playGame(readSudoku "sudoku-tilstand.txt")
+       playGame(fileChooser())
      end
     );
 

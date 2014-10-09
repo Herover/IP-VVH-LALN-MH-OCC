@@ -1,4 +1,5 @@
 (* 6G1 *)
+(* Indlæser en sudoku fil ved at splitte rækkerne til chars *)
 structure IO = TextIO;
 
 fun readSudoku filename =
@@ -24,14 +25,15 @@ val sudoku_tilstand = [[#"5", #"3", #"*", #"*", #"7", #"*", #"*", #"*", #"*"],
 val readSudoku_test = readSudoku "sudoku-tilstand.txt" = sudoku_tilstand;
 
 (* 6G2 *)
-
+(* Tager en sudoku tilstand og printer den som en række per linje *)
 fun showSudoku lst =
     print (foldl (fn (x, g) => g ^ x ^ "\n") "" (map implode lst));
 
 showSudoku sudoku_tilstand;
 
 (* 6G3 *)
-
+(* Kører igennem rækker og elementerne i en suduko tilstand, når den kommer til
+*det angivne element bliver det erstattet *)
 fun modifySudoku sudokuState (r, s, c) =
     let
       fun charLooper (count, []) = []

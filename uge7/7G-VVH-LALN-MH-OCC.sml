@@ -11,19 +11,34 @@ sig
 end;
 
 (* 7G2 *)
+fun remove (_, []) = []
+  | remove (x, y :: ys) = if x = y then remove(x, ys)
+                          else y :: remove (x, ys);
+fun removeDub [] = []
+  | removeDub (x :: xs) = x :: removeDub(remove(x,xs));
 
-(*structure Mset : MSET =
+structure Mset : MSET =
 struct
 type 'a mset = 'a list;
-fun multiplicity (mset, a) = length(List.filter (fn x => x = e) set);
+fun multiplicity (mset, a) = length(List.filter (fn x => x = a) mset);
 val empty = [];
 fun singleton a = [a];
 fun union (mset1, mset2) = mset1 @ mset2;
-fun intersect
-end;*)
+fun intersect ([], []) = []
+  | intersect (mset1, []) = []
+  | intersect (mset1, mset2) =
+    List.concat(map (fn x => List.tabulate(Int.min(multiplicity(mset1, x),
+                                                   multiplicity(mset2, x)),
+                                           fn n => x)) (removeDub mset1));
 
-fun multiplicity (mset, a) = length(List.filter (fn x => x = e) set);
-fun exists (mset, a) = List.exists
+end;
 
-fun intersect (mset1, mset2) =
-    
+
+
+
+
+fun multiplicity (mset, a) = length(List.filter (fn x => x = a) mset);
+
+
+
+intersect([1, 1, 2,  2, 2, 3], [1, 1, 2, 4]);

@@ -173,12 +173,12 @@ fun maxPitch [] = raise Domain
     let
       fun maxPitch_helper ((Rest _), max) = max
         | maxPitch_helper ( Note(_, p),  max) =
-		  if absolutePitch(p) > max
-		  then absolutePitch(p)
-		  else max
-	  val maxPitch_finder = foldl maxPitch_helper (absolutePitch fst) mel
+          if absolutePitch(p) > max
+          then absolutePitch(p)
+          else max
+      val maxPitch_finder = foldl maxPitch_helper (absolutePitch fst) mel
     in
-	  pitch(maxPitch_finder)
+      pitch(maxPitch_finder)
     end;
 
 val maxPitch_test1 =
@@ -192,9 +192,9 @@ val maxPitch_test3 =
       Note (12, (G, 0)), Note (14,(B, 0)), Note (14, (Fis, 0))
     ] = (B, 0);
 val maxPitch_test4 = (maxPitch []; false) handle Domain => true
-							                   | _ => false;
+                                               | _ => false;
 val maxPitch_test5 = (maxPitch [(Rest 2)]; false) handle Domain => true
-							                           | _ => false;
+                                                       | _ => false;
 
 (* 4G7 *)
 (*
@@ -211,10 +211,10 @@ fun gcd (0, n) = n
 
 fun ratioAdd(Ratio (d1, n1), Ratio (d2, n2)) =
     let
-	  val (d3, n3) = ((d1*n2 + d2*n1), (n1 * n2))
-	  val gd = gcd(d3, n3)
+      val (d3, n3) = ((d1*n2 + d2*n1), (n1 * n2))
+      val gd = gcd(d3, n3)
     in
-	  Ratio (d3 div gd, n3 div gd)
+      Ratio (d3 div gd, n3 div gd)
     end;
 
 ratioAdd(Ratio (3, 4), Ratio (1, 2));
@@ -222,9 +222,9 @@ ratioAdd(Ratio (3, 4), Ratio (1, 2));
 
 fun duration mel = let
   fun add dur total =
-	  if dur <= 0
-	  then raise Domain
-	  else ratioAdd(Ratio (1, dur), total)
+      if dur <= 0
+      then raise Domain
+      else ratioAdd(Ratio (1, dur), total)
   fun counter (Rest dur, total) = add dur total
     | counter (Note (dur, _), total) = add dur total
 in
@@ -238,12 +238,12 @@ val duration_test2 = duration [Note (2, (A, 1)), Note (2, (A, 1))]
 val duration_test3 = duration [Note (2, (A, 1)), Rest 2, Note (2, (A, 1))]
                      = Ratio (3, 2);
 val duration_test4 = duration [
-	  Note (1, (A, 1)),
-	  Note (2, (A, 1)),
-	  Note (4, (A, 1)),
-	  Note (8, (A, 1))
+      Note (1, (A, 1)),
+      Note (2, (A, 1)),
+      Note (4, (A, 1)),
+      Note (8, (A, 1))
     ] = Ratio (15, 8);
 val duration_test5 = (duration [Note (~1, (A, 1))]; false) handle Domain => true
-							                                    | _ => false;
+                                                                | _ => false;
 val duration_test6 = (duration [Note (0, (A, 1))]; false) handle Domain => true
-							                                   | _ => false;
+                                                               | _ => false;

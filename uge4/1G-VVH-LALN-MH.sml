@@ -11,6 +11,8 @@ type melody = music list;
 
 type abspitch = int; (* Se 4G3 *)
 
+val octavePitches = 12;
+
 (* 4G1 *)
 (*
  * Skriver music om til menneskeligt læseligt format.
@@ -58,7 +60,7 @@ val musicToString_test3 = musicToString (Note (4, (Fis, ~2))) = "fis,,4";
 *)
 fun melodyToString [] = ""
   | melodyToString (frste::liste) =
-    foldl (fn (ny, gammel) => gammel ^ " " ^ musicToString(ny))
+    foldl (fn (ny, gammel) => gammel ^ " " ^ musicToString ny)
           (musicToString frste) liste;
 
 val melodyToString_test1 = melodyToString
@@ -90,7 +92,7 @@ fun noteToPitch C = 0
   | noteToPitch Ais = 10
   | noteToPitch B = 11;
 
-fun absolutePitch (a, b) = noteToPitch(a) + 12 * b;
+fun absolutePitch (a, b) = noteToPitch a + octavePitches * b;
 
 val absolutePitch_test1 = absolutePitch(C, 0) = 0;
 val absolutePitch_test2 = absolutePitch(C, 1) = 12;
@@ -129,7 +131,7 @@ fun pitch ap =
 val pitch_test1 = pitch (absolutePitch(C, 0)) = (C, 0);
 val pitch_test2 = pitch (absolutePitch(C, ~2)) = (C, ~2);
 val pitch_test3 = pitch (absolutePitch(B, 2)) = (B, 2);
-val pitch_test4 = absolutePitch (pitch(0)) = 0;
+val pitch_test4 = absolutePitch (pitch 0) = 0;
 
 (* 4G5 *)
 (*
@@ -141,7 +143,9 @@ local
     | transposer n (Note (d, (tone, oct))) = let
       val nyTone = noteToPitch tone + n
     in
-      Note (d, (pitchToNote (nyTone mod 12), nyTone div 12 + oct))
+      Note (
+        d,
+        (pitchToNote (nyTone mod octavePitches),nyTone div octavePitches + oct))
     end
 in
 fun transpose n mel =
@@ -161,15 +165,17 @@ val transpose_test5 = transpose ~12 [Rest (32)] = [Rest (32)];
  * den højeste pitch.
  * Ideen er at omsætte pitch til absolute pitch værdier som er mulige at
  * at sammenligne. Til sidst omsættes den til en pitch igen.
-*)
+ * Er melodien tom eller kun består af pauser vil den smide en Domain exception.
+ *)
 fun maxPitch [] = raise Domain
+  | maxPitch ((Rest _)::mel) = maxPitch mel
   | maxPitch ((Note (_, fst))::mel) =
     let
       fun maxPitch_helper ((Rest _), max) = max
-        | maxPitch_helper ( Note(_, p), max) =
-		       if absolutePitch(p) > max
-		       then absolutePitch(p)
-		       else max
+        | maxPitch_helper ( Note(_, p),  max) =
+		  if absolutePitch(p) > max
+		  then absolutePitch(p)
+		  else max
 	  val maxPitch_finder = foldl maxPitch_helper (absolutePitch fst) mel
     in
 	  pitch(maxPitch_finder)
@@ -185,7 +191,10 @@ val maxPitch_test3 =
     maxPitch [
       Note (12, (G, 0)), Note (14,(B, 0)), Note (14, (Fis, 0))
     ] = (B, 0);
-
+val maxPitch_test4 = (maxPitch []; false) handle Domain => true
+							                   | _ => false;
+val maxPitch_test5 = (maxPitch [(Rest 2)]; false) handle Domain => true
+							                           | _ => false;
 
 (* 4G7 *)
 (*
@@ -202,29 +211,39 @@ fun gcd (0, n) = n
 
 fun ratioAdd(Ratio (d1, n1), Ratio (d2, n2)) =
     let
-	val (d3, n3) = ((d1*n2 + d2*n1), (n1 * n2))
-	val gd = gcd(d3, n3)
+	  val (d3, n3) = ((d1*n2 + d2*n1), (n1 * n2))
+	  val gd = gcd(d3, n3)
     in
-	Ratio (d3 div gd, n3 div gd)
+	  Ratio (d3 div gd, n3 div gd)
     end;
 
 ratioAdd(Ratio (3, 4), Ratio (1, 2));
 
 
-fun duration mel = foldl( fn( (dur, _), total) =>
-			     if dur <= 0
-			     then raise Domain
-			     else ratioAdd(Ratio (1, dur), total) ) (Ratio(0, 1)) mel;
+fun duration mel = let
+  fun add dur total =
+	  if dur <= 0
+	  then raise Domain
+	  else ratioAdd(Ratio (1, dur), total)
+  fun counter (Rest dur, total) = add dur total
+    | counter (Note (dur, _), total) = add dur total
+in
+  foldl counter (Ratio(0, 1)) mel
+end;
 
-val duration_test1 = duration [(1, (A, 1)), (1, (A, 1))] = Ratio (2, 1);
-val duration_test2 = duration [(2, (A, 1)), (2, (A, 1))] = Ratio (1, 1);
-val duration_test3 = duration [
-	(1, (A, 1)),
-	(2, (A, 1)),
-	(4, (A, 1)),
-	(8, (A, 1))
+val duration_test1 = duration [Note (1, (A, 1)), Note (1, (A, 1))] =
+                     Ratio (2, 1);
+val duration_test2 = duration [Note (2, (A, 1)), Note (2, (A, 1))]
+                     = Ratio (1, 1);
+val duration_test3 = duration [Note (2, (A, 1)), Rest 2, Note (2, (A, 1))]
+                     = Ratio (3, 2);
+val duration_test4 = duration [
+	  Note (1, (A, 1)),
+	  Note (2, (A, 1)),
+	  Note (4, (A, 1)),
+	  Note (8, (A, 1))
     ] = Ratio (15, 8);
-val duration_test4 = (duration [(~1, (A, 1))]; false) handle Domain => true
-							   | _ => false;
-val duration_test5 = (duration [(0, (A, 1))]; false) handle Domain => true
-							   | _ => false;
+val duration_test5 = (duration [Note (~1, (A, 1))]; false) handle Domain => true
+							                                    | _ => false;
+val duration_test6 = (duration [Note (0, (A, 1))]; false) handle Domain => true
+							                                   | _ => false;

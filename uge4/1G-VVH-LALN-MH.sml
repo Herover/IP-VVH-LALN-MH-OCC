@@ -9,6 +9,8 @@ datatype music = Note of duration * pitch
                | Rest of duration;
 type melody = music list;
 
+type abspitch = int; (* Se 4G3 *)
+
 (* 4G1 *)
 (*
  * Skriver music om til menneskeligt læseligt format.
@@ -35,10 +37,10 @@ fun pitchclassToText C = "c"
 fun musicToString (Rest d) = "r"^Int.toString d
   | musicToString (Note (d, (p, oc))) =
     let
-        fun mark (_, 0) = ""
-          | mark (ch, n) = ch ^ mark (ch, n-1)
-        fun mkSpace oct = if oct > 0 then mark("'", oct)
-                          else mark(",", ~oct)
+        fun mark _ 0 = ""
+          | mark ch n = ch ^ mark ch (n-1)
+        fun mkSpace oct = if oct > 0 then mark "'" oct
+                          else mark "," (~oct)
     in
         (pitchclassToText p) ^ mkSpace(oc) ^ (Int.toString d)
     end;
@@ -74,7 +76,6 @@ val melodyToString_test3 = melodyToString []
  * absolut pitch værdi.
  * For hver + oktav ligges 12 til, og - trækkes 12 fra.
 *)
-type abspitch = int;
 
 fun noteToPitch C = 0
   | noteToPitch Cis = 1
@@ -118,11 +119,11 @@ fun pitchToNote 0 = C
   | pitchToNote 11 = B
   | pitchToNote _ = raise Domain;
 
-fun pitch (ap) =
+fun pitch ap =
     let
         val p = ap mod 12
     in
-        (pitchToNote p, floor( real(ap)/12.0 ))
+        (pitchToNote p, ap div 12 )
     end;
 
 val pitch_test1 = pitch (absolutePitch(C, 0)) = (C, 0);
@@ -135,23 +136,24 @@ val pitch_test4 = absolutePitch (pitch(0)) = 0;
  * Transponer toner i melodi.
  * Hvis tonen bliver for høj eller lav vil oktaven tilpasse sig.
 *)
+local
+  fun transposer n (Rest d) = Rest d
+    | transposer n (Note (d, (tone, oct))) = let
+      val nyTone = noteToPitch tone + n
+    in
+      Note (d, (pitchToNote (nyTone mod 12), nyTone div 12 + oct))
+    end
+in
 fun transpose n mel =
-    foldl (fn ((dur, (tone, oct)), gammel) => let
-	       val nyTone = noteToPitch tone + n
-	   in
-	       (
-		 dur,
-		 (pitchToNote( nyTone mod 12), floor(real(nyTone)/12.0) + oct)
-	       ) :: gammel
-	   end
-	  )
-          [] mel;
+    map (transposer n) mel
+end;
 
-val transpose_test1 = transpose 3 [(32, (A, ~1))] = [(32, (C, 0))];
-val transpose_test2 = transpose 1 [(32, (B, ~1))] = [(32, (C, 0))];
-val transpose_test3 = transpose 12 [(32, (A, 0))] = [(32, (A, 1))];
-val transpose_test4 = transpose ~1 [(32, (C, 0))] = [(32, (B, ~1))];
-val transpose_test4 = transpose ~12 [(32, (C, 0))] = [(32, (C, ~1))];
+val transpose_test1 = transpose 3 [Note (32, (A, ~1))] = [Note (32, (C, 0))];
+val transpose_test2 = transpose 1 [Note (32, (B, ~1))] = [Note (32, (C, 0))];
+val transpose_test3 = transpose 12 [Note (32, (A, 0))] = [Note (32, (A, 1))];
+val transpose_test4 = transpose ~1 [Note (32, (C, 0))] = [Note (32, (B, ~1))];
+val transpose_test4 = transpose ~12 [Note (32, (C, 0))] = [Note (32, (C, ~1))];
+val transpose_test5 = transpose ~12 [Rest (32)] = [Rest (32)];
 
 (* 4G6 *)
 (*
@@ -161,24 +163,28 @@ val transpose_test4 = transpose ~12 [(32, (C, 0))] = [(32, (C, ~1))];
  * at sammenligne. Til sidst omsættes den til en pitch igen.
 *)
 fun maxPitch [] = raise Domain
-  | maxPitch ((_, fst)::mel) =
+  | maxPitch ((Note (_, fst))::mel) =
     let
-	val hoejestPitch = foldl (
-		fn ( (_, p ), hoejest) =>
-		   if absolutePitch(p) > hoejest
-		   then absolutePitch(p)
-		   else hoejest
-	    ) (absolutePitch fst) mel
+      fun maxPitch_helper ((Rest _), max) = max
+        | maxPitch_helper ( Note(_, p), max) =
+		       if absolutePitch(p) > max
+		       then absolutePitch(p)
+		       else max
+	  val maxPitch_finder = foldl maxPitch_helper (absolutePitch fst) mel
     in
-	pitch(hoejestPitch)
+	  pitch(maxPitch_finder)
     end;
 
 val maxPitch_test1 =
-    maxPitch [(12, (G, ~1)), (14,(B, ~2)), (14, (Fis, ~3))] = (G, ~1);
+    maxPitch [
+      Note (12, (G, ~1)), Note (14,(B, ~2)), Note (14, (Fis, ~3))
+    ] = (G, ~1);
 val maxPitch_test2 =
-    maxPitch [(12, (C, 99)), (14,(B, 0))] = (C, 99);
+    maxPitch [Note (12, (C, 99)), Note (14,(B, 0))] = (C, 99);
 val maxPitch_test3 =
-    maxPitch [(12, (G, 0)), (14,(B, 0)), (14, (Fis, 0))] = (B, 0);
+    maxPitch [
+      Note (12, (G, 0)), Note (14,(B, 0)), Note (14, (Fis, 0))
+    ] = (B, 0);
 
 
 (* 4G7 *)
@@ -193,29 +199,31 @@ val maxPitch_test3 =
 datatype rational = Ratio of int * int;
 fun gcd (0, n) = n
   | gcd (m ,n) = gcd (n mod m, m);
-fun ratioAdd((d1, n1), (d2, n2)) =
+
+fun ratioAdd(Ratio (d1, n1), Ratio (d2, n2)) =
     let
 	val (d3, n3) = ((d1*n2 + d2*n1), (n1 * n2))
 	val gd = gcd(d3, n3)
     in
-	(d3 div gd, n3 div gd)
+	Ratio (d3 div gd, n3 div gd)
     end;
 
-ratioAdd(( 3, 4), (1, 2));
+ratioAdd(Ratio (3, 4), Ratio (1, 2));
 
 
 fun duration mel = foldl( fn( (dur, _), total) =>
 			     if dur <= 0
 			     then raise Domain
-			     else ratioAdd((1, dur), total) ) (0, 1) mel;
-val duration_test1 = duration [(1, (A, 1)), (1, (A, 1))] = (2, 1);
-val duration_test2 = duration [(2, (A, 1)), (2, (A, 1))] = (1, 1);
+			     else ratioAdd(Ratio (1, dur), total) ) (Ratio(0, 1)) mel;
+
+val duration_test1 = duration [(1, (A, 1)), (1, (A, 1))] = Ratio (2, 1);
+val duration_test2 = duration [(2, (A, 1)), (2, (A, 1))] = Ratio (1, 1);
 val duration_test3 = duration [
 	(1, (A, 1)),
 	(2, (A, 1)),
 	(4, (A, 1)),
 	(8, (A, 1))
-    ] = (15, 8);
+    ] = Ratio (15, 8);
 val duration_test4 = (duration [(~1, (A, 1))]; false) handle Domain => true
 							   | _ => false;
 val duration_test5 = (duration [(0, (A, 1))]; false) handle Domain => true

@@ -1,4 +1,5 @@
 (* 7G1 *)
+load "Listsort";
 signature MSET =
 sig
   type 'a mset (* typen af multimængder med elementer af type 'a *)
@@ -17,6 +18,7 @@ fun remove (_, []) = []
 fun removeDub [] = []
   | removeDub (x :: xs) = x :: removeDub(remove(x,xs));
 
+
 structure Mset : MSET =
 struct
 type 'a mset = 'a list;
@@ -30,15 +32,37 @@ fun intersect ([], []) = []
     List.concat(map (fn x => List.tabulate(Int.min(multiplicity(mset1, x),
                                                    multiplicity(mset2, x)),
                                            fn n => x)) (removeDub mset1));
+fun minus ([], []) = []
+  | minus (mset1, []) = []
+  | minus (mset1, mset2) =
+    List.concat(map (fn x => List.tabulate(Int.max(0, multiplicity(mset1, x) -
+                                                   multiplicity(mset2, x)),
+                                           fn n => x)) (removeDub mset1));
 
 end;
 
+(* 7G3 *)
+(* efter sammenligning med pdf filen, ser filen ud som vi forventede *)
+val one = Mset.singleton 1;
+val two = Mset.singleton 2;
+val three = Mset.singleton 3;
+val four = Mset.singleton 4;
+val m1223 = Mset.union (one ,
+                        Mset.union (two ,
+                                    Mset.union (two , three )));
+val m114 = Mset.union (one ,
+                       Mset.union (one ,
+                                   Mset.union (four , Mset.empty )));
 
+(* 7G4 *)
+(* svarerne stemmer overens med eksemplerne i opgavetemaet *)
+val forening = Mset.union (m1223, m114);
+val faelles = Mset.intersect (m1223, m114);
+val minus = Mset.minus (m1223, m114);
 
-
-
-fun multiplicity (mset, a) = length(List.filter (fn x => x = a) mset);
-
-
-
-intersect([1, 1, 2,  2, 2, 3], [1, 1, 2, 4]);
+(* 7G5 *)
+(* svarerne stemmer overens med eksemplerne i
+ * opgavetemaet, hvor  værdierne tælles *)
+val forekomster1 = Mset.multiplicity (forening, 1);
+val forekomster2 = Mset.multiplicity (faelles, 1);
+val forekomster3 = Mset.multiplicity (minus, 1);

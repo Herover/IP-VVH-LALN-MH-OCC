@@ -204,7 +204,7 @@ public class TicTacToe
 	    }
 
 	//Do random move
-	ArrayList<char[][][]>  emptyPositions  = new ArrayList<char[][][]>();
+	ArrayList<char[]>  emptyPositions  = new ArrayList<char[]>();
 	for (int x = 0; x < rows; x++)
 	    {
 		for (int y = 0; y < columns; y++)
@@ -217,7 +217,7 @@ public class TicTacToe
 		    }
 		Random random = new Random();
 		int n = random.nextInt(8);
-		return emptyPositions(n);
+		return emptyPositions.get(n);
 	    }
 	return null;
     }

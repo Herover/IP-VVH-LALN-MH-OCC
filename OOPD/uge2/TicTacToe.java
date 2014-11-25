@@ -4,16 +4,14 @@ public class TicTacToe
 {
     public static char[][] board = new char[3][3];
 
-    public static boolean playing = true;
-    public static boolean inGame = true;
     public static char turn = 'x';
     private static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
         int[] action;
-        while(playing) {
+        while(true) {
             newBoard();
-            while(inGame) {
+            while(true) {
                 System.out.println(turn + "'s tur");
                 action = getHumanAction(turn);
                 set(action[0], action[1], turn);
@@ -21,12 +19,12 @@ public class TicTacToe
                 turn = turn=='x'?'o':'x';
                 if(isGameOver()) {
                     System.out.println(turn + " tabte!");
-                    inGame = false;
+                    break;
                 }
             }
             System.out.println("Vil du spille igen? j/n");
             if(scan.nextLine() == "n") {
-                playing = false;
+                break;
             }
         }
     }

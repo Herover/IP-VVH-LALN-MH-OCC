@@ -83,8 +83,102 @@ public class TicTacToe
         board[row][column] = val;
     }
 
-    public static boolean isGameOver() {
+    public static boolean isGameOver(char[][] board)
+    {
+	int rows = board.length;
+	int columns = board[0].length;
+	int winCount = 3;
+	int i = 0;
+	char c;
 
-        return false;
+	//Horizontal check
+	for (int x = 0; x < rows; x++)
+	    {
+		for (int y = 0; y < columns; y++)
+		    {
+			if(board[x][y] == c) i++;
+			else if(board[x][y] != c && board[x][y] != ' ')
+			    {
+				c = board[x][y];
+				i = 1;
+			    }
+			else i = 0;
+			
+			if(i == winCount) return true;
+		    }
+		i = 0;
+	    }
+
+	//Vertical check
+	for (int y = 0; y < rows; y++)
+	    {
+		for (int x = y; x < columns; x++)
+		    {
+			if(board[x][y] == c) i++;
+			else if(board[x][y] != c && board[x][y] != ' ')
+			    {
+				c = board[x][y];
+				i = 1;
+			    }
+			else i = 0;
+			
+			if(i == winCount) return true;
+		    }
+		i = 0;
+	    }
+    }
+
+    public static char[] ai(char playerSymbol)
+    {
+	int rows = board.length;
+	int columns = board[0].length;
+	
+	//Try for a winning move
+        for (int x = 0; x < board.length; x++)
+	    {
+		for (int y = 0; y < board[x].length; y++)
+		    {
+			if(board[x][y] != ' ') continue;
+			var testBoard = board;
+			testBoard[x][y] = playerSymbol;
+			if(isGameOver(testBoard))
+			    {
+				char[] move = new char[2];
+				move[0] = x;
+				move[1] = y;
+				return move;
+			    }
+		    }
+	    }
+
+	//Try to prevent opponents from winning
+        for (int x = 0; x < board.length; x++)
+	    {
+		for (int y = 0; y < board[x].length; y++)
+		    {
+			if(board[x][y] != ' ') continue;
+			var testBoard = board;
+			testBoard[x][y] = playerSymbol;
+			if(isGameOver(testBoard))
+			    {
+				char[] move = new char[2];
+				move[0] = x;
+				move[1] = y;
+				return move;
+			    }
+		    }
+	    }
+
+	//Do random move
+	List<char[][][]>  emptyPositions  = new ArrayList<char[][][]>();
+	for (int x = 0; x < rows; i++)
+	    {
+		for (int y = 0; y < columns; i++)
+		    {
+			if(board[x][y] == ' ')
+			    {
+			    }
+		    }
+	    }
     }
 }

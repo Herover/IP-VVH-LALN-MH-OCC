@@ -241,7 +241,6 @@ public class TicTacToe
 			    testBoard[row][column] = 'x' == playerSymbol ? 'o' : 'x';
 			    if(isGameOver(testBoard))
 			        {
-				    System.out.println("block");
 				    int[] move = new int[] {row, column};
 				    return move;
 			        }

@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class TicTacToe
 {
@@ -83,13 +85,18 @@ public class TicTacToe
         board[row][column] = val;
     }
 
+    public static boolean isGameOver()
+    {
+	return isGameOver(board);
+    }
+
     public static boolean isGameOver(char[][] board)
     {
 	int rows = board.length;
 	int columns = board[0].length;
 	int winCount = 3;
 	int i = 0;
-	char c;
+	char c = '.';
 
 	//Horizontal check
 	for (int x = 0; x < rows; x++)
@@ -110,9 +117,9 @@ public class TicTacToe
 	    }
 
 	//Vertical check
-	for (int y = 0; y < rows; y++)
+	for (int y = 0; y < columns; y++)
 	    {
-		for (int x = y; x < columns; x++)
+		for (int x = 0; x < rows; x++)
 		    {
 			if(board[x][y] == c) i++;
 			else if(board[x][y] != c && board[x][y] != ' ')
@@ -126,6 +133,37 @@ public class TicTacToe
 		    }
 		i = 0;
 	    }
+
+	//Diagonal check
+	if(board[0][0] != ' ')
+	    {
+		c = board[0][0];
+		if(board[1][1] == c && board[2][2] == c)
+		    {
+			return true;
+		    }
+	    }
+
+	//Anti-Diagonal check
+	if(board[0][2] != ' ')
+	    {
+		c = board[0][2];
+		if(board[1][1] == c && board[2][0] == c)
+		    {
+			return true;
+		    }
+	    }
+
+	//Board filled check
+	for (int x = 0; x < rows; x++)
+	    {
+		for (int y = 0; y < columns; y++)
+		    {
+			if(board[x][y] == ' ') break;
+		    }
+		return true;
+	    }
+	return false;
     }
 
     public static char[] ai(char playerSymbol)
@@ -139,13 +177,11 @@ public class TicTacToe
 		for (int y = 0; y < board[x].length; y++)
 		    {
 			if(board[x][y] != ' ') continue;
-			var testBoard = board;
+			char[][] testBoard = board.clone();
 			testBoard[x][y] = playerSymbol;
 			if(isGameOver(testBoard))
 			    {
-				char[] move = new char[2];
-				move[0] = x;
-				move[1] = y;
+				char[] move = new char[] {(char) x, (char) y};
 				return move;
 			    }
 		    }
@@ -156,29 +192,33 @@ public class TicTacToe
 	    {
 		for (int y = 0; y < board[x].length; y++)
 		    {
-			if(board[x][y] != ' ') continue;
-			var testBoard = board;
+			if(board[x][y] != ' ' | board[x][y] == playerSymbol) continue;
+			char[][] testBoard = board.clone();
 			testBoard[x][y] = playerSymbol;
 			if(isGameOver(testBoard))
 			    {
-				char[] move = new char[2];
-				move[0] = x;
-				move[1] = y;
+				char[] move = new char[] {(char) x, (char) y};
 				return move;
 			    }
 		    }
 	    }
 
 	//Do random move
-	List<char[][][]>  emptyPositions  = new ArrayList<char[][][]>();
-	for (int x = 0; x < rows; i++)
+	ArrayList<char[][][]>  emptyPositions  = new ArrayList<char[][][]>();
+	for (int x = 0; x < rows; x++)
 	    {
-		for (int y = 0; y < columns; i++)
+		for (int y = 0; y < columns; y++)
 		    {
 			if(board[x][y] == ' ')
 			    {
+				char[] move = new char[] {(char) x, (char) y};
+				emptyPositions.add(move);
 			    }
 		    }
+		Random random = new Random();
+		int n = random.nextInt(8);
+		return emptyPositions(n);
 	    }
+	return null;
     }
 }

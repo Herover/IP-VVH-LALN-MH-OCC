@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class TicTacToe
 {
@@ -7,13 +8,30 @@ public class TicTacToe
     public static char turn = 'x';
     private static Scanner scan = new Scanner(System.in);
 
+    private static int playerX;
+    private static int playerO;
+
+    private static final PLAYER_HUMAN = 0;
+    private static final PLAYER_ROBOT = 1;
+    private static final PLAYER_DRUNK_ROBOT = 2;
+
     public static void main(String[] args) {
         int[] action;
+        
         while(true) {
             newBoard();
+            System.out.println("Angiv spiller X:");
+            System.out.println("0: menneske");
+            System.out.println("1: ai");
+            System.out.println("2: drunken ai");
+            playerX = scan.nextInt();
+            System.out.println("Spiller O:");
+            playerO = scan.nextInt();
+
+            turn = 'x';
             while(true) {
                 System.out.println(turn + "'s tur");
-                action = getHumanAction(turn);
+                action = getAction(turn);
                 set(action[0], action[1], turn);
                 printBoard();
                 turn = turn=='x'?'o':'x';
@@ -26,6 +44,17 @@ public class TicTacToe
             if(scan.nextLine() == "n") {
                 break;
             }
+        }
+    }
+
+    public static int[] getAction(char symbol) {
+        if(symbol == 'x') {
+            if (playerX == PLAYER_HUMAN)
+                return getPlayerAction(symbol);
+            else if(playerX == PLAYER_ROBOT)
+                return getAIAction(symbol);
+            else if(playerX == PLAYER_DRUNKEN_ROBOT)
+                return getDrunkenAIAction(symbol);
         }
     }
 
@@ -83,13 +112,13 @@ public class TicTacToe
         board[row][column] = val;
     }
 
-    public static boolean isGameOver(char[][] board)
+    public static boolean isGameOver()
     {
 	int rows = board.length;
 	int columns = board[0].length;
 	int winCount = 3;
 	int i = 0;
-	char c;
+	char c = '.';
 
 	//Horizontal check
 	for (int x = 0; x < rows; x++)
@@ -126,8 +155,9 @@ public class TicTacToe
 		    }
 		i = 0;
 	    }
+    return false;
     }
-
+/*
     public static char[] ai(char playerSymbol)
     {
 	int rows = board.length;
@@ -180,5 +210,19 @@ public class TicTacToe
 			    }
 		    }
 	    }
+    }*/
+
+    public static int[] getDrunkenAIAction(char playerSymbol)
+    {
+        Random rand = new Random();
+        int[] action = new int[2];
+        action[0] = -1;
+        action[1] = -1;
+        while(!isValidCoord(action[0], action[1])) {
+            action[0] = rand.nextInt(3);
+            action[1] = rand.nextInt(3);
+        }
+        return action;
     }
+
 }

@@ -127,85 +127,83 @@ public class TicTacToe
     }
 
     public static boolean isGameOver(char[][] board) {
-	    int rows = board.length;
-	    int columns = board[0].length;
+	    int rowCount = board.length;
+	    int columnCount = board[0].length;
 	    int winCount = 3;
 	    int i = 0;
 	    char c = '.';
 
 	    //Horizontal check
-	    for (int x = 0; x < rows; x++)
-        {
-		    for (int y = 0; y < columns; y++)
-	        {
-			    if(board[x][y] == c) i++;
-			    else if(board[x][y] != c && board[x][y] != ' ')
-		        {
-				    c = board[x][y];
+	    for (int row = 0; row < rowCount; row++)
+		{
+		    for (int column = 0; column < columnCount; column++)
+			{
+			    if(board[row][column] == c) i++;
+			    else if(board[row][column] != c && board[row][column] != ' ')
+				{
+				    c = board[row][column];
 				    i = 1;
-		        }
+				}
 			    else i = 0;
-			
 			    if(i == winCount) return true;
-	        }
+			}
 		    i = 0;
-        }
+		}
 
 	    //Vertical check
-	    for (int y = 0; y < columns; y++)
-        {
-		    for (int x = 0; x < rows; x++)
-	        {
-			    if(board[x][y] == c) i++;
-			    else if(board[x][y] != c && board[x][y] != ' ')
-		        {
-				    c = board[x][y];
+	    for (int column = 0; column < columnCount; column++)
+		{
+		    for (int row = 0; row < rowCount; row++)
+			{
+			    if(board[row][column] == c) i++;
+			    else if(board[row][column] != c && board[row][column] != ' ')
+				{
+				    c = board[row][column];
 				    i = 1;
-		        }
+				}
 			    else i = 0;
-			
 			    if(i == winCount) return true;
-	        }
+			}
 		    i = 0;
-        }
+		}
 
 	    //Diagonal check
 	    if(board[0][0] != ' ')
-        {
+		{
 		    c = board[0][0];
 		    if(board[1][1] == c && board[2][2] == c)
-	        {
+			{
 			    return true;
-	        }
-        }
+			}
+		}
 
 	    //Anti-Diagonal check
 	    if(board[0][2] != ' ')
-        {
+		{
 		    c = board[0][2];
 		    if(board[1][1] == c && board[2][0] == c)
-	        {
+			{
 			    return true;
-	        }
-        }
+			}
+		}
 
 	    //Board filled check
-        int numSymbols = 0;
-	    for (int x = 0; x < rows; x++)
-        {
-		    for (int y = 0; y < columns; y++)
-	        {
-			    if(board[x][y] == ' ') numSymbols ++;
-	        }
-        }
+	    int numSymbols = 0;
+	    for (int row = 0; row < rowCount; row++)
+		{
+		    for (int column = 0; column < columnCount; column++)
+			{
+			    if(board[row][column] != ' ') numSymbols ++;
+			}
+		}
 	    return numSymbols == 9;
     }
 
     private static char[][] getBoardCopy() {
         char[][] copy = new char[board.length][board.length];
-        for(int x = 0; x < board.length; x ++) {
-            for(int y = 0; y < board.length; y ++) {
-                copy[x][y] = board[x][y];
+        for(int row = 0; row < board.length; row++) {
+            for(int column = 0; column < board.length; column++) {
+                copy[row][column] = board[row][column];
             }
         }
         return copy;
@@ -213,60 +211,87 @@ public class TicTacToe
 
     public static int[] getAIAction(char playerSymbol)
     {
-	    int rows = board.length;
-	    int columns = board[0].length;
+	int rowCount = board.length;
+	int columnCount = board[0].length;
+	int[][] corners = new int[][] {{0, 0}, {0, 2}, {2, 0}, {2, 2}};
 	
-	    //Try for a winning move
-        for (int x = 0; x < board.length; x++)
+	//Try for a winning move
+        for (int row = 0; row < rowCount; row++)
         {
-		    for (int y = 0; y < board[x].length; y++)
+		    for (int column = 0; column < columnCount; column++)
 		    {
-			    if(board[x][y] != ' ') continue;
+			    if(board[row][column] != ' ') continue;
 			    char[][] testBoard = getBoardCopy();
-			    testBoard[x][y] = playerSymbol;
+			    testBoard[row][column] = playerSymbol;
 			    if(isGameOver(testBoard))
 			    {
-				    int[] move = new int[] {x, y};
-				    return move;
+				int[] move = new int[] {row, column};
+				return move;
 			    }
 		    }
 	    }
 
-	//Try to prevent opponents from winning
-        for (int x = 0; x < board.length; x++)
+	//Try to prevent opponent from winning
+        for (int row = 0; row < rowCount; row++)
 	    {
-    		for (int y = 0; y < board[x].length; y++)
+    		for (int column = 0; column < columnCount; column++)
 		    {
-			    if(board[x][y] != ' ' | board[x][y] == playerSymbol) continue;
+			    if(board[row][column] != ' ') continue;
 			    char[][] testBoard = getBoardCopy();
-			    testBoard[x][y] = playerSymbol;
+			    testBoard[row][column] = 'x' == playerSymbol ? 'o' : 'x';
 			    if(isGameOver(testBoard))
 			        {
-				    int[] move = new int[] {x, y};
+				    System.out.println("block");
+				    int[] move = new int[] {row, column};
 				    return move;
 			        }
 		        }
 	        }
 
-	    //Do random move
-	    ArrayList<Integer[]>  emptyPositions  = new ArrayList<Integer[]>();
-	    for (Integer x = 0; x < rows; x++)
-        {
-		    for (Integer y = 0; y < columns; y++)
-	        {
-			    if(board[x][y] != ' ')
-		        {
-				    Integer[] move = new Integer[] {x, y};
-				    emptyPositions.add(move);
-		        }
-	        }
-            if(emptyPositions.size() == 0) System.out.println("ARG INGEN LEDIGE PLADSER");
-		    Random random = new Random();
-		    Integer n = random.nextInt(emptyPositions.size());
-            int[] mv = new int[] {(int) emptyPositions.get(n)[0], (int) emptyPositions.get(n)[1]};
-		    return mv;
-        }
-        return null;
+	//If center is free and a corner is taken, take center
+	if(board[1][1] == ' ')
+	    {
+		for (int cornerIndex = 0; cornerIndex < corners.length; cornerIndex++)
+		    {
+			if(board[corners[cornerIndex][0]][corners[cornerIndex][1]] != ' ')
+			    {
+				int[] move = new int[] {1, 1};
+				return move;
+			    }
+		    }
+	    }
+
+
+	//Try to place in a corner
+	for (int cornerIndex = 0; cornerIndex < corners.length; cornerIndex++)
+	    {
+		if(board[corners[cornerIndex][0]][corners[cornerIndex][1]] == ' ')
+		    {
+			return corners[cornerIndex];
+		    }
+	    }
+
+	//Do random move
+	ArrayList<Integer[]> emptyPositions = new ArrayList<Integer[]>();
+	for (Integer row = 0; row < rowCount; row++)
+            {
+		for (Integer column = 0; column < columnCount; column++)
+		    {
+			if(board[row][column] == ' ')
+			    {
+				Integer[] move = new Integer[] {row, column};
+				emptyPositions.add(move);
+			    }
+		    }
+	    }
+	if(emptyPositions.size() > 0)
+	    {
+		Random random = new Random();
+		Integer n = random.nextInt(emptyPositions.size());
+		int[] mv = new int[] {(int) emptyPositions.get(n)[0], (int) emptyPositions.get(n)[1]};
+		return mv;
+	    }
+        else return null;
     }
 
     public static int[] getDrunkenAIAction(char playerSymbol)

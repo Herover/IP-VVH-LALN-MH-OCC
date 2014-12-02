@@ -19,7 +19,7 @@ import java.lang.Comparable;
 
 public class Matrix implements Comparable<Matrix> {
   double[][] val; // The local variable storing matrix entries
-  
+
   /**
    * Constructor: Create a matrix object with max(1,m) rows and max(1,n) columns.
    *
@@ -27,7 +27,7 @@ public class Matrix implements Comparable<Matrix> {
    * @param n the number of columns
    **/
   public Matrix(int m, int n) {
-    
+
 	if((m < 1) || (n < 1)) {
       	val = new double[1][1];
 	} else {
@@ -40,9 +40,9 @@ public class Matrix implements Comparable<Matrix> {
    * @param other any other matrix
    * @return a negative, zero or positive integer if this matrix sum is smaller,
    * equal or larger then other's sum.
-   **/
+   **/ 
   @Override public int compareTo(Matrix other) {
-    return this.sum() - other.sum();
+      return this.sum() - other.sum();
   }
 
   /**
@@ -58,7 +58,7 @@ public class Matrix implements Comparable<Matrix> {
     }
     return sum;
   }
-  
+
   /**
    * Check if the values of 2 matrices are equal
    *
@@ -82,7 +82,7 @@ public class Matrix implements Comparable<Matrix> {
     }
     return true;
   }
-  
+
   /**
    * Create a string of the matrix's content
    *
@@ -90,7 +90,7 @@ public class Matrix implements Comparable<Matrix> {
    **/
   public String toString() {
     String str = "";
-    
+
 	for(int i = 1; i <= rows(); i++) {
       str = str+"[";
       for(int j = 1; j <= cols(); j++) {
@@ -107,7 +107,7 @@ public class Matrix implements Comparable<Matrix> {
 
     return str;
   }
-  
+
   /**
    * Create an identity matrix object with n rows and n columns
    *
@@ -134,7 +134,7 @@ public class Matrix implements Comparable<Matrix> {
 
     return I;
   }
-  
+
   /**
    * Create a constant matrix object with n rows and m columns containing values v
    *
@@ -159,7 +159,7 @@ public class Matrix implements Comparable<Matrix> {
 
     return C;
   }
-  
+
   /**
    * Return the number of rows in the matrix.
    *
@@ -168,7 +168,7 @@ public class Matrix implements Comparable<Matrix> {
   public int rows() {
 	return val.length;
   }
-  
+
   /**
    * Return the number of columns in the matrix.
    *
@@ -193,7 +193,7 @@ public class Matrix implements Comparable<Matrix> {
 
 	val[m-1][n-1] = v;
   }
-  
+
   /**
    * Change all values to be v.
    *
@@ -206,7 +206,7 @@ public class Matrix implements Comparable<Matrix> {
       }
 	}
   }
-  
+
   /**
    * Return the matrix value at row m and column n.
    *
@@ -229,18 +229,18 @@ public class Matrix implements Comparable<Matrix> {
    * @return a new matrix
    **/
   public Matrix transpose() {
-    
+
 	Matrix M = new Matrix(cols(), rows());
-    
+
 	for(int i = 1; i <= cols(); i++) {
 	    for(int j = 1; j <= rows(); j++) {
 		M.set(i, j, get(j, i));
 	    }
 	}
-    
+
 	return M;
   }
-    
+
   /**
    * Pretty-print the matrix to stdout.
    **/
@@ -259,20 +259,20 @@ public class Matrix implements Comparable<Matrix> {
 	if((rows()!=B.rows()) || (cols()!=B.cols())) {
       throw new IllegalArgumentException("Number of rows and columns differ");
 	}
-    
+
 	Matrix M = new Matrix(rows(), cols());
 	double v;
-    
+
 	for(int i = 1; i <= rows(); i++) {
       for(int j = 1; j <= cols(); j++) {
 		v = get(i, j);
 		M.set(i, j, v+B.get(i, j));
       }
 	}
-    
+
 	return M;
-  }    
-  
+  }
+
   /**
    * Create a new matrix which is the element-wise addition of this with v.
    *
@@ -281,16 +281,16 @@ public class Matrix implements Comparable<Matrix> {
    **/
   public Matrix add(double v) {
 	Matrix M = new Matrix(rows(), cols());
-    
+
 	for(int i = 1; i <= rows(); i++) {
       for(int j = 1; j <= cols(); j++) {
 		M.set(i, j, v+get(i, j));
       }
 	}
-    
+
 	return M;
-  }    
-  
+  }
+
   /**
    * Create a new matrix which is the element-wise multiplication of this with v.
    *
@@ -299,16 +299,16 @@ public class Matrix implements Comparable<Matrix> {
    **/
   public Matrix mul(double v) {
 	Matrix M = new Matrix(rows(), cols());
-    
+
 	for(int i = 1; i <= rows(); i++) {
       for(int j = 1; j <= cols(); j++) {
 		M.set(i, j, v*get(i, j));
       }
 	}
-    
+
 	return M;
-  }    
-  
+  }
+
   /**
    * Create a new matrix which is the concatenation of this with B, i.e. [this | B].
    *
@@ -320,9 +320,9 @@ public class Matrix implements Comparable<Matrix> {
 	if(rows() != B.rows()) {
       throw new IllegalArgumentException("The number of rows must be identical");
 	}
-    
+
     Matrix M = new Matrix(rows(), cols()+B.cols());
-    
+
 	for(int i = 1; i <= M.rows(); i++) {
       for(int j = 1; j <= cols(); j++) {
 		M.set(i, j, get(i, j));
@@ -331,10 +331,10 @@ public class Matrix implements Comparable<Matrix> {
 		M.set(i, j+cols(), B.get(i, j));
       }
 	}
-    
+
 	return M;
   }
-  
+
   /**
    * Create a new matrix whos elements are copied from this matrix from rows from_row .. to_row and columns from_col .. to_col.
    *
@@ -349,11 +349,11 @@ public class Matrix implements Comparable<Matrix> {
 	if((from_row < 1) || (from_row > rows()) || (from_col < 1) || (from_col > cols()) || (to_row < from_row) || (to_row > rows()) || (to_col < from_col) || (to_col>cols())) {
       throw new IndexOutOfBoundsException("Cannot access values outside the index domain");
 	}
-    
+
 	int ROWS = to_row - from_row + 1;
 	int COLS = to_col - from_col + 1;
 	Matrix M = new Matrix(ROWS, COLS);
-    
+
 	for(int i=1; i<=ROWS; i++) {
       for(int j=1;j<=COLS;j++) {
 		M.set(i, j, get(i+from_row-1, j+from_col-1));
@@ -361,7 +361,7 @@ public class Matrix implements Comparable<Matrix> {
     }
 	return M;
   }
-  
+
   /**
    * Create a new matrix, where rows a and b are interchanged
    *
@@ -374,9 +374,9 @@ public class Matrix implements Comparable<Matrix> {
 	if((a < 1) || (a>rows()) || (b<1) || (b>rows())) {
       throw new IndexOutOfBoundsException("Cannot access values outside the index domain");
 	}
-    
+
 	Matrix M = add(0);
-    
+
 	if(a!=b) {
       for(int i = 1; i <= rows(); i++) {
 		if(i == a) {
@@ -395,10 +395,10 @@ public class Matrix implements Comparable<Matrix> {
 		}
       }
 	}
-    
+
 	return M;
   }
-  
+
   /**
    * Create a new matrix, where row a has been replaced by the sum of row b plus v times row c.
    *
@@ -412,10 +412,10 @@ public class Matrix implements Comparable<Matrix> {
   public Matrix addMulRows(int a, int b, int c, double v) {
 	if((a < 1) || (a>rows()) || (b<1) || (b>rows()) || (c<1) || (c>rows())) {
       throw new IndexOutOfBoundsException("Cannot access values outside the index domain");
-	} 
-    
+	}
+
 	Matrix M = add(0);
-    
+
 	for(int i = 1; i <= rows(); i++) {
       for(int j = 1; j <= cols(); j++) {
 		if(i == a) {
@@ -425,10 +425,10 @@ public class Matrix implements Comparable<Matrix> {
 		}
       }
 	}
-    
+
 	return M;
   }
-  
+
   /**
    * Create a new matrix as a copy of this excluding the i'th column.
    *
@@ -440,9 +440,9 @@ public class Matrix implements Comparable<Matrix> {
 	if((a < 1) || (a>cols())) {
       throw new IndexOutOfBoundsException("Cannot delete a column outside the index domain");
 	}
-    
+
 	Matrix M;
-    
+
 	if(a == 1) {
       M = subMatrix(1, 2, rows(), cols());
 	} else if(a == cols()) {
@@ -451,10 +451,10 @@ public class Matrix implements Comparable<Matrix> {
       M = subMatrix(1, 1, rows(), a-1);
       M = M.concatenateRows(subMatrix(1, a+1, rows(), cols()));
 	}
-    
+
 	return M;
   }
-  
+
   /**
    * Create a new matrix as a copy of this where column a is replaced with B.
    *
@@ -471,14 +471,14 @@ public class Matrix implements Comparable<Matrix> {
 	if((B.rows() != rows()) || (B.cols() != 1)) {
       throw new IllegalArgumentException("Must be a matrix of size rows() x 1");
 	}
-    
+
 	Matrix M = add(0);
-    
+
 	for(int i=1; i <= rows(); i++) {
       M.set(i,a,B.get(i,1));
 	}
 	return M;
   }
-  
+
 
 }

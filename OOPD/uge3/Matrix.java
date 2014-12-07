@@ -42,15 +42,15 @@ public class Matrix implements Comparable<Matrix> {
    * equal or larger then other's sum.
    **/ 
   @Override public int compareTo(Matrix other) {
-      return this.sum() - other.sum();
+      return (int)Math.signum(this.sum() - other.sum());
   }
 
   /**
    * Sum of values in matrix.
    * @return sum of this values
    **/
-  public int sum() {
-    int sum = 0;
+  public double sum() {
+    double sum = 0;
     for(int row = 1; row < rows()+1; row++) {
       for(int col = 1; col < cols()+1; col++) {
         sum += get(row, col);

@@ -14,7 +14,9 @@ public class Mouse extends Entity implements Printable
     }
 
     @Override
-    //Moves to a random nearby empty position if possible
+    /**
+     * Moves to a random nearby empty position if possible and outputs the move as text
+     */
     public void move()
     {
 	ArrayList<Position> emptyPositions = findEmptyNeighbours();

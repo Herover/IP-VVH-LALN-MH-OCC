@@ -3,7 +3,10 @@ import java.util.Random;
 
 public class Mouse extends Entity implements Printable
 {
-    String representation = "r";
+    public String representation()
+    { 
+	return "m";
+    }
 
     public Mouse(Board aBoard, Position aPosition)
     {
@@ -11,14 +14,31 @@ public class Mouse extends Entity implements Printable
     }
 
     @Override
+    //Moves to a random nearby empty position if possible
     public void move()
     {
 	ArrayList<Position> emptyPositions = findEmptyNeighbours();
 	if(emptyPositions.size() == 0) return;
 	Random rand = new Random();
-	setPosition(emptyPositions.get(rand.nextInt(emptyPositions.size() - 1)));
+	Position newPos = emptyPositions.get(rand.nextInt(emptyPositions.size() - 1));
+	System.out.println("Mouse at " + positionToString(getPosition()) + 
+						       " is moved to " 
+						       + positionToString(newPos));
+	getBoard().moveTo(newPos, this);
     }
 
+    /**
+     * @param the position to convert
+     * @return a position converted to a string
+     */
+    private String positionToString(Position pos)
+    {
+	return "(" + pos.getRow() + ", " + pos.getCol() + ")";
+    }
+
+    /**
+     * @return a list of all empty positions near own position
+     */
     private ArrayList<Position> findEmptyNeighbours()
     {
 	int selfRow = getPosition().getRow();
@@ -28,14 +48,14 @@ public class Mouse extends Entity implements Printable
 	ArrayList<Position> emptyPositions = new ArrayList<Position>();
 	
 	//Selects a row and then checks columns for empty positions
-	for(int r = selfRow + 1; r <= selfRow + 2; r++)
+	for(int r = selfRow - 1; r <= selfRow + 2; r++)
 	    {
 		if(r < 0) continue;
-		if(r > rowCount) break;
-		for(int c = selfCol + 1; c <= selfCol + 2; c++)
+		if(r >= rowCount) break;
+		for(int c = selfCol - 1; c <= selfCol + 2; c++)
 		    {
 			if(c < 0) continue;
-			if(c > colCount) break;
+			if(c >= colCount) break;
 			Position curPos = new Position(r, c);
 			if(getBoard().get(curPos) == null) emptyPositions.add(curPos);
 		    }

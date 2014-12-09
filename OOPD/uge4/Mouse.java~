@@ -5,9 +5,9 @@ public class Mouse extends Entity implements Printable
 {
     String representation = "r";
 
-    public Rabbit(Board aBoard, Position aPosition, int aSpeed)
+    public Mouse(Board aBoard, Position aPosition)
     {
-	super(aBoard, aPosition, aSpeed);
+	super(aBoard, aPosition, 0);
     }
 
     @Override

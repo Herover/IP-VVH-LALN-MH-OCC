@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Rabbit extends Entity implements Printable
+public class Mouse extends Entity implements Printable
 {
     String representation = "r";
 

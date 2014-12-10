@@ -50,11 +50,11 @@ public class Mouse extends Entity implements Printable
 	ArrayList<Position> emptyPositions = new ArrayList<Position>();
 	
 	//Selects a row and then checks columns for empty positions
-	for(int r = selfRow - 1; r <= selfRow + 2; r++)
+	for(int r = selfRow - 1; r <= selfRow + 1; r++)
 	    {
 		if(r < 0) continue;
 		if(r >= rowCount) break;
-		for(int c = selfCol - 1; c <= selfCol + 2; c++)
+		for(int c = selfCol - 1; c <= selfCol + 1; c++)
 		    {
 			if(c < 0) continue;
 			if(c >= colCount) break;

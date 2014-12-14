@@ -9,8 +9,7 @@ public class StoneTest {
         Board board = new Board();
         Stone stone = new Stone(board, new Position(1,1));
 
-        org.junit.Assert.assertEquals("failure stone not s", stone.representation(),"s");
-        System.out.println("Representation is ok");
-
+        org.junit.Assert.assertEquals("failure stone not s",
+                                      stone.representation(),"s");
     }
 }

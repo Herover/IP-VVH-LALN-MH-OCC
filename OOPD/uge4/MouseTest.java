@@ -24,6 +24,7 @@ public class MouseTest {
 
             Board board1 = new Board();
             Mouse mouse1 = new Mouse(board1, new Position(1, 1));
+            board1.add(mouse1.getPosition(), mouse1);
 
             oldRow = mouse1.getPosition().getRow();
             oldCol = mouse1.getPosition().getCol();
@@ -38,21 +39,25 @@ public class MouseTest {
         }
 
         for(int i = 0; i < 10; i++) {
-
             Board board2 = new Board();
             Mouse mouse2 = new Mouse(board2, new Position(0, 0));
             Stone stone1 = new Stone(board2, new Position(0, 1));
             Stone stone2 = new Stone(board2, new Position(1, 1));
             Stone stone3 = new Stone(board2, new Position(1, 0));
+            board2.add(mouse2.getPosition(), mouse2);
+            board2.add(stone1.getPosition(), stone1);
+            board2.add(stone2.getPosition(), stone2);
+            board2.add(stone3.getPosition(), stone3);
+            
 
-            oldRow = mouse1.getPosition().getRow();
-            oldCol = mouse1.getPosition().getCol();
-            mouse1.move();
-            newRow = mouse1.getPosition().getRow();
-            newCol = mouse1.getPosition().getCol();
+            oldRow = mouse2.getPosition().getRow();
+            oldCol = mouse2.getPosition().getCol();
+            mouse2.move();
+            newRow = mouse2.getPosition().getRow();
+            newCol = mouse2.getPosition().getCol();
 
             org.junit.Assert.assertTrue("Mouse moved even though it can't",
-                                        oldRow = newRow && oldCol = newCol);
+                                        (oldRow == newRow) && (oldCol == newCol));
 
         }
 

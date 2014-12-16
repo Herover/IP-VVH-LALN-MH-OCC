@@ -2,11 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Mirza on 16-12-2014.
- */
-import java.util.HashMap;
-/** TODO
- * lave tests
+ * Skema bestående af DaySchedules
  */
 public class Scheme {
 
@@ -21,22 +17,37 @@ public class Scheme {
         }
     }
 
+    /**
+     * @return navn på skema
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @param Day en dag på ugen
+     * @return DayScedule ønsket dag.
+     */
     public DaySchedule getDay(Day day) {
         return schema.get(day);
     }
 
+    /**
+     * @return alle dage på skema
+     */
     public HashMap<Day, DaySchedule> getDays() {
         return schema;
     }
-
+    /**
+     * @param Session at tilføje
+     */
     public void addSession(Session ses) {
         schema.get(ses.getDay()).addSession(ses);
     }
 
+    /**
+     * Print indhold af ugen, mest rettet mod fejlsøgning.
+     */
     public void print() {
         for (Map.Entry<Day, DaySchedule> entry : schema.entrySet()) {
             System.out.println(entry.getKey());

@@ -1,5 +1,5 @@
 /**
- * Created by Mirza on 16-12-2014.
+ * Klasserum med tidstabel
  */
 public class Classroom extends Scheme {
 
@@ -7,7 +7,12 @@ public class Classroom extends Scheme {
         super(name);
     }
 
-
+    /**
+     * Tilføjer session til klasserum.
+     * Smider exception IllegalArgumentException hvis rummet allerede er i brug
+     * på det tidspunkt sessionen tilføjes.
+     * @param sessionen der tilføjes.
+     */
     @Override
     public void addSession(Session ses) {
         DaySchedule day = schema.get(ses.getDay());

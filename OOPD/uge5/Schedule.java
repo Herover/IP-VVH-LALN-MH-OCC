@@ -34,6 +34,10 @@ public class Schedule {
         System.out.println(ses.getDay());
         System.out.println(ses.getTime());
         System.out.println(ses.getClassroom().getName());
-        ses.getCourse().getDay(ses.getDay());
+        Course co = ses.getCourse();
+        System.out.println("Found course: " + co.getName());
+        DaySchedule day = co.getDay(ses.getDay());
+        System.out.println("Found day: " + day);
+        ses.getCourse().getDay(ses.getDay()).addSession(ses);
     }
 }

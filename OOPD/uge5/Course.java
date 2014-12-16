@@ -15,6 +15,9 @@ public class Course {
     public Course(String name) {
         this.name = name;
         this.schema = new HashMap<Day, DaySchedule>();
+        for (Day i : Day.values()) {
+            schema.put(i, new DaySchedule());
+        }
     }
 
     public String getName() {

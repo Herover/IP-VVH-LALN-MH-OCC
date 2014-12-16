@@ -8,34 +8,20 @@ import java.util.HashMap;
 /** TODO
  * lave tests
  */
-public class Course {
-
-    private HashMap<Day, DaySchedule> schema;
-    private final String name;
+public class Course extends Scheme {
 
     public Course(String name) {
-        this.name = name;
-        this.schema = new HashMap<Day, DaySchedule>();
-        for (Day i : Day.values()) {
-            schema.put(i, new DaySchedule());
-        }
+        super(name);
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public DaySchedule getDay(Day day) {
-        return schema.get(day);
-    }
-
+    @Override
     public void addSession(Session ses) {
+        for (Map.Entry<Day, DaySchedule> entry : schema.entrySet()) {
+            if(entry.getValue().sessionExists(ses)) {
+                throw new IllegalArgumentException("Session already added!");
+            }
+        }
         schema.get(ses.getDay()).addSession(ses);
     }
 
-    public void print() {
-        for (Map.Entry<Day, DaySchedule> entry : schema.entrySet()) {
-            System.out.println(entry.getKey());
-        }
-    }
 }

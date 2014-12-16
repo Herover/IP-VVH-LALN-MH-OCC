@@ -30,8 +30,8 @@ public class DaySchedule {
      * Check if equaliant session exists at given time
      * @return boolean
      */
-    public boolean sessionExists(Time time, Session session) {
-        for(Session ses : schema.get(time)) {
+    public boolean sessionExists(Session session) {
+        for(Session ses : schema.get(session.getTime())) {
             if(
                ses.getCourse().getName().equals
                (session.getCourse().getName())

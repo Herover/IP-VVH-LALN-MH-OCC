@@ -1,29 +1,10 @@
-import java.util.HashMap;
 /**
  * Created by Mirza on 16-12-2014.
  */
-public class Classroom {
-
-    private HashMap<Day, DaySchedule> schema;
-    private final String name;
+public class Classroom extends Scheme {
 
     public Classroom(String name) {
-        this.name = name;
-        this.schema = new HashMap<Day, DaySchedule>();
-        for (Day i : Day.values()) {
-            schema.put(i, new DaySchedule());
-        }
+        super(name);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public DaySchedule getDay(Day day) {
-        return schema.get(day);
-    }
-
-    public void addSession(Session ses) {
-        schema.get(ses.getDay()).addSession(ses);
-    }
 }

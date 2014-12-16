@@ -18,6 +18,9 @@ public class Schedule {
     }
 
     public Course getCourse(String name) {
+        if(this.courses.get(name) == null) {
+            throw new IllegalArgumentException("No such '"+name+"' course");
+        }
         return this.courses.get(name);
     }
 
@@ -30,7 +33,14 @@ public class Schedule {
     }
 
     public Classroom getRoom(String name) {
+        if(this.rooms.get(name) == null) {
+            throw new IllegalArgumentException("No such '"+name+"' room");
+        }
         return this.rooms.get(name);
+    }
+
+    public HashMap<String, Classroom> getRooms() {
+        return this.rooms;
     }
 
     public void addSession(Session ses) {

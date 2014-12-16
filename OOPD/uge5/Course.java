@@ -16,12 +16,11 @@ public class Course extends Scheme {
 
     @Override
     public void addSession(Session ses) {
-        for (Map.Entry<Day, DaySchedule> entry : schema.entrySet()) {
-            if(entry.getValue().sessionExists(ses)) {
-                throw new IllegalArgumentException("Session already added!");
-            }
+        DaySchedule day = schema.get(ses.getDay());
+        if(day.getTime(ses.getTime()).size() != 0) {
+            throw new IllegalArgumentException("Room is already in use!");
         }
-        schema.get(ses.getDay()).addSession(ses);
+        day.addSession(ses);
     }
 
 }

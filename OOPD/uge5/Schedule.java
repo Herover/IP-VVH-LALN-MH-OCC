@@ -44,11 +44,16 @@ public class Schedule {
     }
 
     public void addSession(Session ses) {
-        Course co = ses.getCourse();
-        DaySchedule day = co.getDay(ses.getDay());
-        day.addSession(ses);
+        try{
+            Classroom room = ses.getClassroom();
+            room.addSession(ses);
+            Course co = ses.getCourse();
+            DaySchedule day = co.getDay(ses.getDay());
+            day.addSession(ses);
+        }
+        catch(Exception e) {
+            System.out.println("Could not add session to room because: "+e.getMessage());
+        }
 
-        Classroom room = ses.getClassroom();
-        room.addSession(ses);
     }
 }

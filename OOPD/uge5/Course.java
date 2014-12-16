@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Mirza on 16-12-2014.
@@ -26,5 +27,15 @@ public class Course {
 
     public DaySchedule getDay(Day day) {
         return schema.get(day);
+    }
+
+    public void addSession(Session ses) {
+        schema.get(ses.getDay()).addSession(ses);
+    }
+
+    public void print() {
+        for (Map.Entry<Day, DaySchedule> entry : schema.entrySet()) {
+            System.out.println(entry.getKey());
+        }
     }
 }

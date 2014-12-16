@@ -23,4 +23,7 @@ public class Classroom {
         return schema.get(day);
     }
 
+    public void addSession(Session ses) {
+        schema.get(ses.getDay()).addSession(ses);
+    }
 }

@@ -21,6 +21,10 @@ public class Schedule {
         return this.courses.get(name);
     }
 
+    public HashMap<String, Course> getCourses() {
+        return this.courses;
+    }
+
     public void addRoom(Classroom r) {
         this.rooms.put(r.getName(), r);
     }
@@ -33,5 +37,8 @@ public class Schedule {
         Course co = ses.getCourse();
         DaySchedule day = co.getDay(ses.getDay());
         day.addSession(ses);
+
+        Classroom room = ses.getClassroom();
+        room.addSession(ses);
     }
 }

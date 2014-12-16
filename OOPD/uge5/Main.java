@@ -3,25 +3,27 @@ import java.util.ArrayList;
 import java.io.File;
 import java.util.Map;
 
-public class Main 
+public class Main
 {
     private static Schedule scheme = new Schedule();
 
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
 
 	ArrayList<Classroom> classrooms = FileReader.readClassrooms("lokaler.txt");
-	for(Classroom room : classrooms) 
+	for(Classroom room : classrooms)
 	    {
 		scheme.addRoom(room);
+        System.out.println(room.getName());
 	    }
-	
+
 	ArrayList<Course> courses = FileReader.readCourses("kurser.txt");
-	for(Course course : courses) 
+	for(Course course : courses)
 	    {
 		scheme.addCourse(course);
+        System.out.println(course.getName());
 	    }
-	
+
 	ArrayList<String[]> sessions = FileReader.readSessions("skema.txt");
 	for(String[] session : sessions)
 	    {
@@ -32,10 +34,12 @@ public class Main
 				   Day.fromString(session[2]),
 				   Time.fromString(session[3])
                                    ));
+        System.out.println("added section");
 	    }
         System.out.println("Kurser: ");
         for (Map.Entry<String, Course> entry : scheme.getCourses().entrySet()) {
             System.out.println(entry.getKey());
         }
+
     }
 }

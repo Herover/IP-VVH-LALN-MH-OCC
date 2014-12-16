@@ -18,6 +18,7 @@ public class FileReader {
         ArrayList<Classroom> rooms = new ArrayList<Classroom>();
         while(scanner.hasNext()) {
             Classroom room = new Classroom(scanner.nextLine());
+            rooms.add(room);
 	    }
         scanner.close();
         return rooms;
@@ -28,6 +29,7 @@ public class FileReader {
         ArrayList<Course> courses = new ArrayList<Course>();
         while(scanner.hasNext()) {
             Course course = new Course(scanner.nextLine());
+            courses.add(course);
 	    }
         scanner.close();
         return courses;
@@ -40,6 +42,7 @@ public class FileReader {
             String[] session = new String[4];
             String line = scanner.nextLine();
             session = line.split(" ");
+            sessions.add(session);
 	    }
         scanner.close();
         return sessions;

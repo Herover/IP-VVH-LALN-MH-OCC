@@ -32,7 +32,7 @@ public class FileReader {
         while(scanner.hasNext()) {
             Classroom room = new Classroom(scanner.nextLine());
             rooms.add(room);
-	    }
+        }
         scanner.close();
         return rooms;
     }
@@ -48,7 +48,7 @@ public class FileReader {
         while(scanner.hasNext()) {
             Course course = new Course(scanner.nextLine());
             courses.add(course);
-	    }
+        }
         scanner.close();
         return courses;
     }

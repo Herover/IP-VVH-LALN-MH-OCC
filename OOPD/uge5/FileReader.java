@@ -14,17 +14,18 @@ public class FileReader
 	    }
 	catch(Exception ex)
 	    {
-		System.out.println("Error: " + ex.getMessage);
+		System.out.println("Error: " + ex.getMessage());
 	    }
 	ArrayList<Classroom> rooms = new ArrayList<Classroom>();
 	while(scanner.hasNext())
 	    {
 		Classroom room = new Classroom(scanner.nextLine());
 	    }
+	scanner.close();
 	return rooms;
     }
 
-    public static ArrayList<Classroom> readCourses()
+    public static ArrayList<Course> readCourses()
     {
 	try
 	    {
@@ -32,13 +33,14 @@ public class FileReader
 	    }
 	catch(Exception ex)
 	    {
-		System.out.println("Error: " + ex.getMessage);
+		System.out.println("Error: " + ex.getMessage());
 	    }
 	ArrayList<Course> courses = new ArrayList<Course>();
 	while(scanner.hasNext())
 	    {
-		Classroom course = new Course(scanner.nextLine());
+		Course course = new Course(scanner.nextLine());
 	    }
+	scanner.close();
 	return courses;
     }
 
@@ -50,7 +52,7 @@ public class FileReader
 	    }
 	catch(Exception ex)
 	    {
-		System.out.println("Error: " + ex.getMessage);
+		System.out.println("Error: " + ex.getMessage());
 	    }
 	ArrayList<String[]> schedules = new ArrayList<String[]>();
 	while(scanner.hasNext())
@@ -59,6 +61,7 @@ public class FileReader
 		String line = scanner.nextLine();
 		schedule = line.split(" ");
 	    }
+	scanner.close();
 	return schedules;	
     }
 }

@@ -11,8 +11,10 @@ public class TimeTest {
         Time time8 = Time.EIGHT;
         Time time9 = Time.NINE;
 
-        org.junit.Assert.assertTrue("Tiderne er ikke ens", time8.getHour().equals("8"));
-        org.junit.Assert.assertTrue("Tiderne er ikke ens", time9.getHour().equals("9"));
+        org.junit.Assert.assertTrue("Tiderne er ikke ens",
+                                    time8.getHour().equals("8"));
+        org.junit.Assert.assertTrue("Tiderne er ikke ens",
+                                    time9.getHour().equals("9"));
 
     }
 

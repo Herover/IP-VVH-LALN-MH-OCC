@@ -12,13 +12,8 @@ public class FileReader {
      * Bruges til at specificere fil der skal læses fra, kun intern.
      * @param String filnavn.
      */
-    private static void createScanner(String f) {
-        try {
-            scanner = new Scanner(new File(f));
-        }
-        catch(Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
-        }
+    private static void createScanner(String f) throws Exception {
+        scanner = new Scanner(new File(f));
     }
 
     /**
@@ -26,7 +21,8 @@ public class FileReader {
      * @param String fil at læse fra.
      * @return ArrayList<Classroom> liste med lokaler.
      */
-    public static ArrayList<Classroom> readClassrooms(String fileName) {
+    public static ArrayList<Classroom> readClassrooms(String fileName)
+        throws Exception {
         createScanner(fileName);
         ArrayList<Classroom> rooms = new ArrayList<Classroom>();
         while(scanner.hasNext()) {
@@ -42,7 +38,8 @@ public class FileReader {
      * @param String filnavn.
      * @return ArrayList<Course> liste med kurser.
      */
-    public static ArrayList<Course> readCourses(String fileName) {
+    public static ArrayList<Course> readCourses(String fileName)
+        throws Exception {
         createScanner(fileName);
         ArrayList<Course> courses = new ArrayList<Course>();
         while(scanner.hasNext()) {
@@ -59,7 +56,8 @@ public class FileReader {
      * @return ArrayList<String> liste af strenge til at bruge til at generere
      * Session senere. Kommer i rækkefølgen kursus, lokale, dag, tidspunkt.
      */
-    public static ArrayList<String[]> readSessions(String fileName) {
+    public static ArrayList<String[]> readSessions(String fileName)
+        throws Exception {
         createScanner(fileName);
         ArrayList<String[]> sessions = new ArrayList<String[]>();
         while(scanner.hasNext()) {

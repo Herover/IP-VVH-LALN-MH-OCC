@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 
 public class TimeTest {
 
+    /**
+     * Test om vi kan gå fra Time til streng.
+     */
     @Test
     public void testGetHour() throws Exception {
 
@@ -18,6 +21,9 @@ public class TimeTest {
 
     }
 
+    /**
+     * Test om vi kan oprette en tid ud fra en streng.
+     */
     @Test
     public void testFromString() throws Exception {
 

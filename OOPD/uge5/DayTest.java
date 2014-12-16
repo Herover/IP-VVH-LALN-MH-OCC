@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 
 public class DayTest {
 
+    /**
+     * Test om vi kan oprette en dag ud fra et dansk ugenavn.
+     */
     @Test
     public void testFromString() throws Exception {
         Day mon = Day.MONDAY;

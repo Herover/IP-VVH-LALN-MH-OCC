@@ -8,11 +8,11 @@ public class Session {
     private Course course;
     private Classroom classroom;
 
-    public Session(Course course, Classroom classroom, Day day, Time time) {
+    public Session(Time time, Day day, Course course, Classroom classroom) {
+        this.time = time;
+        this.day = day;
         this.course = course;
         this.classroom = classroom;
-        this.day = day;
-        this.time = time;
     }
 
     public Time getTime() {

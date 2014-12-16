@@ -1,37 +1,37 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.io.File;
 
-public class Main {
+public class Main 
+{
 
     private static Schedule scheme = new Schedule();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
 
-        Classroom room;
-
-        room = new Classroom("Rum1");
-        scheme.addRoom(room);
-        room = new Classroom("Rum2");
-        scheme.addRoom(room);
-        room = new Classroom("Rum3");
-        scheme.addRoom(room);
-
-        Course course;
-        course = new Course("kursus1");
-        scheme.addCourse(course);
-        course = new Course("kursus2");
-        scheme.addCourse(course);
-        course = new Course("kursus3");
-        scheme.addCourse(course);
-
-        //Classroom 1, room 1, monday, 8
-        Session c1r1m8 = new Session(
-                                     Time.EIGHT,
-                                     Day.MONDAY,
-                                     scheme.getCourse("kursus1"),
-                                     scheme.getRoom("Rum1")
-                                     );
-        scheme.addSession(c1r1m8);
-
+	ArrayList<Classroom> classrooms = FileReader.readClassrooms();
+	for(Classroom room : classrooms) 
+	    {
+		scheme.addRoom(room);
+	    }
+	
+	ArrayList<Course> courses = FileReader.readCourses();
+	for(Course course : courses) 
+	    {
+		scheme.addCourse(course);
+	    }
+	
+	ArrayList<String[]> sessions = FileReader.readSessions();
+	for(String[] session : sessions)
+	    {
+		scheme.addSession(new Session
+				  (
+				   new Course(session[0]),
+				   new Classroom(session[1]),
+				   Day.fromString(session[2]),
+				   Time.fromString(session[3])
+					    ));
+	    }
     }
 }

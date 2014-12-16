@@ -13,6 +13,9 @@ public class DaySchedule {
 
     public DaySchedule() {
         this.schema = new HashMap<Time, Session>();
+        for (Time i : Time.values()) {
+            schema.put(i, null);
+        }
     }
 
     public HashMap<Time, Session> getSchema() {
@@ -25,5 +28,9 @@ public class DaySchedule {
 
     public Session getTime(Time time) {
         return schema.get(time);
+    }
+
+    public void addSession(Session ses) {
+        this.setTime(ses.getTime(), ses);
     }
 }

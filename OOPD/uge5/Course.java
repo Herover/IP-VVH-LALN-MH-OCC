@@ -20,4 +20,8 @@ public class Course {
     public String getName() {
         return this.name;
     }
+
+    public DaySchedule getDay(Day day) {
+        return schema.get(day);
+    }
 }

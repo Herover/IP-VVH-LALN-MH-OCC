@@ -28,4 +28,12 @@ public class Schedule {
     public Classroom getRoom(String name) {
         return this.rooms.get(name);
     }
+
+    public void addSession(Session ses) {
+        System.out.println(ses.getCourse().getName());
+        System.out.println(ses.getDay());
+        System.out.println(ses.getTime());
+        System.out.println(ses.getClassroom().getName());
+        ses.getCourse().getDay(ses.getDay());
+    }
 }

@@ -4,36 +4,34 @@ import java.io.File;
 public class Main {
 
     private static Schedule scheme = new Schedule();
-    private static Scanner roomScanner;
-    private static Scanner courseScanner;
 
     public static void main(String[] args) {
 
-        try{
-            roomScanner = new Scanner(new File("lokaler.txt"));
-        }
-        catch(Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        while(roomScanner.hasNext()) {
-            String name = roomScanner.nextLine();
-            System.out.println(name);
-            Classroom room = new Classroom(name);
-            scheme.addRoom(room);
-        }
+        Classroom room;
 
-        try{
-            courseScanner = new Scanner(new File("kurser.txt"));
-        }
-        catch(Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        while(courseScanner.hasNext()) {
-            String name = courseScanner.nextLine();
-            System.out.println(name);
-            Course course = new Course(name);
-            scheme.addCourse(course);
-        }
+        room = new Classroom("Rum1");
+        scheme.addRoom(room);
+        room = new Classroom("Rum2");
+        scheme.addRoom(room);
+        room = new Classroom("Rum3");
+        scheme.addRoom(room);
+
+        Course course;
+        course = new Course("kursus1");
+        scheme.addCourse(course);
+        course = new Course("kursus2");
+        scheme.addCourse(course);
+        course = new Course("kursus3");
+        scheme.addCourse(course);
+
+        //Classroom 1, room 1, monday, 8
+        Session c1r1m8 = new Session(
+                                     Time.EIGHT,
+                                     Day.MONDAY,
+                                     scheme.getCourse("kursus1"),
+                                     scheme.getRoom("Rum1")
+                                     );
+        scheme.addSession(c1r1m8);
 
     }
 }

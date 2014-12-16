@@ -31,7 +31,6 @@ public class Schedule {
 
     public void addSession(Session ses) {
         Course co = ses.getCourse();
-        System.out.println("Found course: " + co.getName());
         DaySchedule day = co.getDay(ses.getDay());
         day.addSession(ses);
     }

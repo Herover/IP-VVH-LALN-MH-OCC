@@ -41,16 +41,6 @@ public class Main
             System.out.println("Kunne ikke læse skema: "+e.getMessage());
         }
         for(String[] session : sessions) {
-            /*
-            System.out.print("Adding session to course '");
-            System.out.print(scheme.getCourse(session[0]).getName());
-            System.out.print("' in room '");
-            System.out.print(scheme.getRoom(session[1]).getName());
-            System.out.print("' at '"+Time.fromString(session[3]).name());
-            System.out.print("' on '");
-            System.out.print(Day.fromString(session[2]).name());
-            System.out.println("'");
-            */
             scheme.addSession(new Session
                               (
                                scheme.getCourse(session[0]),

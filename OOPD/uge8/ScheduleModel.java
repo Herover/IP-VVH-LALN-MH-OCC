@@ -34,4 +34,29 @@ public class ScheduleModel implements Model {
         }
         return courses;
     }
+
+    public void addRooms(ArrayList<Classroom> classrooms) {
+        for(Classroom room : classrooms) {
+            schedule.addRoom(room);
+        }
+    }
+
+    public void addCourses(ArrayList<Course> courses) {
+        for(Course course: courses) {
+            schedule.addCourse(course);
+        }
+    }
+
+    public void addSessions(ArrayList<String[]> sessions) {
+        for(String[] session : sessions) {
+            schedule.addSession(new Session
+                                (
+                                 schedule.getCourse(session[0]),
+                                 schedule.getRoom(session[1]),
+                                 Day.fromString(session[2]),
+                                 Time.fromString(session[3])
+                                 )
+                                );
+        }
+    }
 }

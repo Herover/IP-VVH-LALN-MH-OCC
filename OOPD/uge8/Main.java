@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Main
 {
-    private static Schedule scheme = new Schedule();
+    private static ScheduleModel model = new ScheduleModel();
 
     public static void main(String[] args)
     {
@@ -18,9 +18,7 @@ public class Main
         catch(Exception e) {
             System.out.println("Kunne ikke læse lokaler: " + e.getMessage());
         }
-        for(Classroom room : classrooms) {
-            scheme.addRoom(room);
-        }
+        model.addRooms(classrooms);
 
         ArrayList<Course> courses = null;
         try {
@@ -29,9 +27,7 @@ public class Main
         catch(Exception e) {
             System.out.println("Kunne ikke læse kurser: "+e.getMessage());
         }
-        for(Course course : courses) {
-            scheme.addCourse(course);
-        }
+        model.addCourses(courses);
 
         ArrayList<String[]> sessions = null;
         try {
@@ -40,25 +36,7 @@ public class Main
         catch(Exception e) {
             System.out.println("Kunne ikke læse skema: "+e.getMessage());
         }
-        for(String[] session : sessions) {
-            scheme.addSession(new Session
-                              (
-                               scheme.getCourse(session[0]),
-                               scheme.getRoom(session[1]),
-                               Day.fromString(session[2]),
-                               Time.fromString(session[3])
-                               )
-                              );
-        }
-
-        System.out.println("Lokaler: ");
-        for (Map.Entry<String, Classroom> entry : scheme.getRooms().entrySet()) {
-            System.out.println(entry.getKey());
-        }
-        System.out.println("Kurser: ");
-        for (Map.Entry<String, Course> entry : scheme.getCourses().entrySet()) {
-            System.out.println(entry.getKey());
-        }
+        model.addSessions(sessions);
 
 
     }

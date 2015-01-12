@@ -10,19 +10,36 @@ public class Main
     public static void main(String[] args)
     {
 
-        ArrayList<Classroom> classrooms =
-            FileReader.readClassrooms("lokaler.txt");
+        ArrayList<Classroom> classrooms = null;
+        try {
+            classrooms =
+                FileReader.readClassrooms("lokaler.txt");
+        }
+        catch(Exception e) {
+            System.out.println("Kunne ikke læse lokaler: " + e.getMessage());
+        }
         for(Classroom room : classrooms) {
             scheme.addRoom(room);
         }
 
-        ArrayList<Course> courses = FileReader.readCourses("kurser.txt");
+        ArrayList<Course> courses = null;
+        try {
+            courses = FileReader.readCourses("kurser.txt");
+        }
+        catch(Exception e) {
+            System.out.println("Kunne ikke læse kurser: "+e.getMessage());
+        }
         for(Course course : courses) {
             scheme.addCourse(course);
-            System.out.println(course.getName());
         }
 
-        ArrayList<String[]> sessions = FileReader.readSessions("skema.txt");
+        ArrayList<String[]> sessions = null;
+        try {
+            sessions = FileReader.readSessions("skema.txt");
+        }
+        catch(Exception e) {
+            System.out.println("Kunne ikke læse skema: "+e.getMessage());
+        }
         for(String[] session : sessions) {
             /*
             System.out.print("Adding session to course '");

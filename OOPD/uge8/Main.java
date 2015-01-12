@@ -5,10 +5,11 @@ import java.util.Map;
 
 public class Main
 {
-    private static ScheduleModel model = new ScheduleModel();
+    private static ScheduleModel model;
 
     public static void main(String[] args)
     {
+        model = new ScheduleModel();
 
         ArrayList<Classroom> classrooms = null;
         try {
@@ -38,6 +39,8 @@ public class Main
         }
         model.addSessions(sessions);
 
+        CourseView cv = new CourseView(model);
+        cv.activate();
 
     }
 }

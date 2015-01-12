@@ -1,0 +1,48 @@
+import java.awt.*;
+import java.swing.*;
+
+
+public class CourseView implements View {
+
+    private ScheduleModel model;
+    private ScheduleController controller;
+
+    private JFrame frame;
+    private JLabel header;
+
+    public CourseView(ScheduleModel model) {
+        
+    }
+
+    private void initView() {
+        JPanel panel = new JPanel();
+
+        header = new JLabel("Kurser på kage");
+        panel.add(header);
+
+        frame = new JFrame("Kurser");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(200, 400);
+
+        frame.setContentPane(panel);
+        frame.pack();
+
+        controller = new ScheduleController(model, this);
+
+    }
+
+    public void activate() {
+        frame.setVisible(true);
+        update();
+    }
+
+    public void deactivate() {
+        frame.setVisible(false);
+        frame.dispose();
+    }
+
+    public void update() {
+
+    }
+
+}

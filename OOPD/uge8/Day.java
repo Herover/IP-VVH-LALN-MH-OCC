@@ -29,4 +29,16 @@ public enum Day {
 	}
 	return null;
     }
+    public static String toString(Day day) {
+	switch(day) {
+            case MONDAY: return "mandag";
+            case TUESDAY: return "tirsdag"; 
+            case WEDNESDAY: return "onsdag";
+            case THURSDAY: return "torsdag";
+            case FRIDAY: return "fredag";
+            case SATURDAY: return "lørdag";
+            case SUNDAY: return "søndag";
+	    }
+	return null;
+    }
 }

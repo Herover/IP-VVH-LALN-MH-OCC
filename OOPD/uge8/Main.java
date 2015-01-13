@@ -30,7 +30,7 @@ public class Main
         }
         model.addCourses(courses);
 
-        ArrayList<String[]> sessions = null;
+        ArrayList<Session> sessions = null;
         try {
             sessions = FileReader.readSessions("skema.txt");
         }

@@ -3,7 +3,6 @@
  * Indeholder reference til klasserum og kursus samt tidspunkt og ugedag.
  */
 public class Session {
-
     private Time time;
     private Day day;
     private Course course;
@@ -14,6 +13,29 @@ public class Session {
         this.classroom = classroom;
         this.day = day;
         this.time = time;
+    }
+
+    /**
+     * Opretter et Session objekt fra tekst.
+     * Format er "kursus lokale dag tid".
+     * @param line tekst session oprettes ud fra
+     */
+    public static Session fromString(String line) {
+	String[] s = line.split(" ");
+	Course course = new Course(s[0]);
+	Classroom room = new Classroom(s[1]);
+	return new Session(course, room, Day.fromString(s[2]), Time.fromString(s[3]));
+    }
+
+    /**
+     * Laver Session om til en linje tekst.
+     * Format er "kursus lokale dag tid".
+     */
+    public String toString() {
+	    return getCourse().getName() + " " +
+		      getClassroom().getName() + " " +
+		      Day.toString(getDay()) + " " +
+		      getTime().getHour();
     }
 
     /**

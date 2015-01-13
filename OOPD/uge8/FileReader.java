@@ -53,18 +53,15 @@ public class FileReader {
     /**
      * Læs lokale bookinger fra fil.
      * @param String filnavn.
-     * @return ArrayList<String> liste af strenge til at bruge til at generere
-     * Session senere. Kommer i rækkefølgen kursus, lokale, dag, tidspunkt.
+     * @return ArrayList<Sessions> en liste af bestaende af sessions laest
+     * fra filen fileName
      */
-    public static ArrayList<String[]> readSessions(String fileName)
+    public static ArrayList<Session> readSessions(String fileName)
         throws Exception {
         createScanner(fileName);
-        ArrayList<String[]> sessions = new ArrayList<String[]>();
+        ArrayList<Session> sessions = new ArrayList<Session>();
         while(scanner.hasNext()) {
-            String[] session = new String[4];
-            String line = scanner.nextLine();
-            session = line.split(" ");
-            sessions.add(session);
+	    Session.fromString(scanner.nextLine());
 	    }
         scanner.close();
         return sessions;

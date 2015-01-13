@@ -1,4 +1,10 @@
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.io.PrintWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.PrintStream;
 
 /**
  * Håndtere lokaler og kurser.
@@ -79,6 +85,60 @@ public class Schedule {
         catch(Exception e) {
             System.out.println("Could not add session to room because: "+e.getMessage());
         }
+    }
 
+    /**
+     * @param ses Session som skal fjernes fra skema filen
+     * @param filename navnet paa filen der skal redigeres
+     */
+    public static void removeSession(Session ses, String filename) {
+	ArrayList<String> lines = new ArrayList<String>();
+	File file = new File(filename);
+	try {
+	    BufferedReader br = new BufferedReader(new FileReader(file));
+	    String line;
+	    while((line = br.readLine()) != null) {
+		if(!line.equals(ses.toString())) lines.add(line);
+	    }
+	    br.close();
+	    writeLines(lines, filename);
+	}
+	catch(Exception e) { System.out.println(e.getMessage()); 
+	    e.printStackTrace(new PrintStream(System.out)); }
+    }
+
+    /**
+     * @param ses Session der skal skrives ud
+     * @param filename navnet paa filen der skal redigers
+     */
+    public static void writeSession(Session ses, String filename) {
+	ArrayList<String> lines = new ArrayList<String>();
+	File file = new File(filename);
+	try {
+	    BufferedReader br = new BufferedReader(new FileReader(file));
+	    String line;
+	    while((line = br.readLine()) != null) {
+		lines.add(line);
+	    }
+	    br.close();
+	    lines.add(ses.toString());
+	    writeLines(lines, filename);
+	}
+	catch(Exception e) { System.out.println(e.getMessage()); }
+    }
+
+    /**
+     * @param lines linjer der skal skrives ud i en fil
+     * @param filename navnet paa filen der skal redigers
+     */
+    private static void writeLines(ArrayList<String> lines, String filename) {
+	try {
+	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
+	    for(String line : lines) {
+		writer.println(line);
+	    }
+	    writer.close();
+	}
+	catch(Exception e) { System.out.println(e.getMessage()); }
     }
 }

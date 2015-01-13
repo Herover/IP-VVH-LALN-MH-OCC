@@ -54,16 +54,9 @@ public class ScheduleModel implements Model {
         }
     }
 
-    public void addSessions(ArrayList<String[]> sessions) {
-        for(String[] session : sessions) {
-            schedule.addSession(new Session
-                                (
-                                 schedule.getCourse(session[0]),
-                                 schedule.getRoom(session[1]),
-                                 Day.fromString(session[2]),
-                                 Time.fromString(session[3])
-                                 )
-                                );
+    public void addSessions(ArrayList<Session> sessions) {
+        for(Session session : sessions) {
+            schedule.addSession(session);
         }
     }
 

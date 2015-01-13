@@ -52,13 +52,14 @@ public class SchemeView implements View {
 
         Scheme scheme = model.getSelectedScheme();
 
-        String columnNames[] = {"Monday", "Tuesday", "Wednesday", "Thursday",
-                                "Friday", "Saturday", "Sunday" };
+        //String[] columnNames = {"Monday", "Tuesday", "Wednesday", "Thursday",
+        //                        "Friday", "Saturday", "Sunday" };
+        String[] columnNames = {"Mandag", "Tirsdag","Onsdag","Torsdag","Fredag","Lørdag","Søndag" };
 
-        String[][] rowData = {{"1","2","3","4","5","6","7"}, {"1","2","3","4","5","6","7"}};
+        String[][] rowData;
+        rowData = new String[7][9];
 
-
-
+     
 
 
 
@@ -67,11 +68,24 @@ public class SchemeView implements View {
         }
         else {
             header = new JLabel(scheme.getName());
-
-
+            
+            for(int d = 0; d < 7; d++) {
+                //System.out.println(scheme.getName());
+                DaySchedule day = scheme
+                    .getDay(Day.fromString(columnNames[d].toLowerCase()));
+                for(int t = 8; t < 17; t++) {
+                    ArrayList<Session> ses = day
+                        .getTime(Time.fromString(Integer.toString(t)));
+                    System.out.println(Time.fromString(Integer.toString(t)).toString()+ses.size());
+                    if(ses.size() > 0)
+                        rowData[d][t-8] = ses.get(0).getClassroom().getName();
+                    else
+                        rowData[d][t-8] = "N/A";
+                }
+            }
         }
         JTable table = new JTable(rowData, columnNames);
-
+        panel.add(table.getTableHeader());
         panel.add(table, BorderLayout.CENTER);
 
         panel.add(header, BorderLayout.PAGE_START);

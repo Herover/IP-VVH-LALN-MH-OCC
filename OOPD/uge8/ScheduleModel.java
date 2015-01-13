@@ -55,8 +55,10 @@ public class ScheduleModel implements Model {
     }
 
     public void addSessions(ArrayList<Session> sessions) {
+        System.out.println("Adder "+sessions.size());
         for(Session session : sessions) {
             schedule.addSession(session);
+            System.out.println(session.getCourse().getName()+","+session.getClassroom().getName());
         }
     }
 

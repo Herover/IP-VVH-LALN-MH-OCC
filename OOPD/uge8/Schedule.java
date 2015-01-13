@@ -76,6 +76,7 @@ public class Schedule {
      */
     public void addSession(Session ses) {
         try{
+            System.out.println(ses.getCourse().getName()+ses.getClassroom().getName()+ses.getDay().toString()+ses.getTime().toString());
             Classroom room = ses.getClassroom();
             room.addSession(ses);
             Course co = ses.getCourse();
@@ -92,19 +93,19 @@ public class Schedule {
      * @param filename navnet paa filen der skal redigeres
      */
     public static void removeSession(Session ses, String filename) {
-	ArrayList<String> lines = new ArrayList<String>();
-	File file = new File(filename);
-	try {
-	    BufferedReader br = new BufferedReader(new FileReader(file));
-	    String line;
-	    while((line = br.readLine()) != null) {
-		if(!line.equals(ses.toString())) lines.add(line);
-	    }
-	    br.close();
-	    writeLines(lines, filename);
-	}
-	catch(Exception e) { System.out.println(e.getMessage()); 
-	    e.printStackTrace(new PrintStream(System.out)); }
+        ArrayList<String> lines = new ArrayList<String>();
+        File file = new File(filename);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while((line = br.readLine()) != null) {
+                if(!line.equals(ses.toString())) lines.add(line);
+            }
+            br.close();
+            writeLines(lines, filename);
+        }
+        catch(Exception e) { System.out.println(e.getMessage());
+            e.printStackTrace(new PrintStream(System.out)); }
     }
 
     /**
@@ -112,19 +113,19 @@ public class Schedule {
      * @param filename navnet paa filen der skal redigers
      */
     public static void writeSession(Session ses, String filename) {
-	ArrayList<String> lines = new ArrayList<String>();
-	File file = new File(filename);
-	try {
-	    BufferedReader br = new BufferedReader(new FileReader(file));
-	    String line;
-	    while((line = br.readLine()) != null) {
-		lines.add(line);
-	    }
-	    br.close();
-	    lines.add(ses.toString());
-	    writeLines(lines, filename);
-	}
-	catch(Exception e) { System.out.println(e.getMessage()); }
+        ArrayList<String> lines = new ArrayList<String>();
+        File file = new File(filename);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+            br.close();
+            lines.add(ses.toString());
+            writeLines(lines, filename);
+        }
+        catch(Exception e) { System.out.println(e.getMessage()); }
     }
 
     /**
@@ -132,13 +133,13 @@ public class Schedule {
      * @param filename navnet paa filen der skal redigers
      */
     private static void writeLines(ArrayList<String> lines, String filename) {
-	try {
-	    PrintWriter writer = new PrintWriter(filename, "UTF-8");
-	    for(String line : lines) {
-		writer.println(line);
-	    }
-	    writer.close();
-	}
-	catch(Exception e) { System.out.println(e.getMessage()); }
+        try {
+            PrintWriter writer = new PrintWriter(filename, "UTF-8");
+            for(String line : lines) {
+                writer.println(line);
+            }
+            writer.close();
+        }
+        catch(Exception e) { System.out.println(e.getMessage()); }
     }
 }

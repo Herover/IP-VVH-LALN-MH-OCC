@@ -61,8 +61,8 @@ public class FileReader {
         createScanner(fileName);
         ArrayList<Session> sessions = new ArrayList<Session>();
         while(scanner.hasNext()) {
-	    Session.fromString(scanner.nextLine());
-	    }
+            sessions.add(Session.fromString(scanner.nextLine()));
+        }
         scanner.close();
         return sessions;
     }

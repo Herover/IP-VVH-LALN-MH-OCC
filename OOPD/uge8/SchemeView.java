@@ -76,6 +76,7 @@ public class SchemeView implements View {
                 for(int t = 8; t < 17; t++) {
                     ArrayList<Session> ses = day
                         .getTime(Time.fromString(Integer.toString(t)));
+                    System.out.println(ses.size());
                     if(ses.size() > 0)
                         rowData[d][t-8] = ses.get(0).getClassroom().getName();
                     else

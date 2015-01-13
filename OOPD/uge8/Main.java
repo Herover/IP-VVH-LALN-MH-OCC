@@ -37,10 +37,14 @@ public class Main
         catch(Exception e) {
             System.out.println("Kunne ikke læse skema: "+e.getMessage());
         }
+
         model.addSessions(sessions);
 
-        CourseView cv = new CourseView(model);
-        cv.activate();
+        CourseView cov = new CourseView(model);
+        cov.activate();
+
+        ClassroomView crv = new ClassroomView(model);
+        crv.activate();
 
         SchemeView sv = new SchemeView(model);
         sv.activate();

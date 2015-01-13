@@ -28,6 +28,14 @@ public class ScheduleModel implements Model {
         }
     }
 
+    public ArrayList<Classroom> getRooms() {
+        ArrayList<Classroom> rooms = new ArrayList<Classroom>();
+        for (Map.Entry<String, Classroom> entry : schedule.getRooms().entrySet()) {
+            rooms.add(entry.getValue());
+        }
+        return rooms;
+    }
+
     public ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<Course>();
         for (Map.Entry<String, Course> entry : schedule.getCourses().entrySet()) {
@@ -36,10 +44,20 @@ public class ScheduleModel implements Model {
         return courses;
     }
 
+    public Course getCourse(String name) {
+        return schedule.getCourse(name);
+    }
+
     public void addRooms(ArrayList<Classroom> classrooms) {
         for(Classroom room : classrooms) {
             schedule.addRoom(room);
         }
+    }
+
+    public void addRoom(Classroom room) {
+        schedule.addRoom(room);
+        notifyObservers();
+        System.out.println(room);
     }
 
     public void addCourse(Course course) {

@@ -48,6 +48,7 @@ public class CourseView implements View {
 
         controller = new CourseController(model, this);
         controller.listenToCreate(createButton, newNameField);
+
     }
 
     public void activate() {
@@ -70,7 +71,9 @@ public class CourseView implements View {
         Course[] cArr = courses.toArray(new Course[courses.size()]);
         courseList = new JList<Course>(cArr);
         courseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        courseList.addListSelectionListener(new CourseSelection());
+        //courseList.addListSelectionListener(new CourseSelection());
+        controller.listenToSelect(courseList);
+
         JScrollPane scrollPane = new JScrollPane(courseList);
         scrollPane.setPreferredSize(new Dimension(200, 150));
         coursePanel.add(scrollPane, BorderLayout.SOUTH);
@@ -80,11 +83,6 @@ public class CourseView implements View {
         frame.repaint();
     }
 
-    class CourseSelection implements ListSelectionListener {
-        public void valueChanged(ListSelectionEvent event) {
-            Course course = (Course)courseList.getSelectedValue();
-            System.out.println(course.getName());
-        }
-    }
+
 
 }

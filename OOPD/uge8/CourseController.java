@@ -1,14 +1,18 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.event.*;
 import javax.swing.*;
 public class CourseController implements Controller {
     private ScheduleModel model;
     private CourseView view;
     private JTextField nameField;
+    private JList courseList;
 
     public CourseController(ScheduleModel model, CourseView view) {
         this.model = model;
         this.view = view;
+
+        model.attach(this);
     }
 
     public void update() {
@@ -21,6 +25,13 @@ public class CourseController implements Controller {
                                                            nameField);
         saveButton.addActionListener(createListener);
         this.nameField = nameField;
+    }
+
+    public void listenToSelect(JList courseList) {
+        CourseSelectionListener selectListener = new CourseSelectionListener
+            (model,view,courseList);
+        courseList.addListSelectionListener(selectListener);
+        this.courseList = courseList;
     }
 
     class AddNewListener implements ActionListener{
@@ -36,7 +47,23 @@ public class CourseController implements Controller {
         public void actionPerformed(ActionEvent event) {
             Course course = new Course(nameField.getText());
             model.addCourse(course);
-            nameField.setText("");
         }
     }
+
+    class CourseSelectionListener implements ListSelectionListener {
+        ScheduleModel model;
+        CourseView view;
+        JList courseList;
+        CourseSelectionListener(ScheduleModel model, CourseView view,
+                                JList courseList) {
+            this.model = model;
+            this.view = view;
+            this.courseList = courseList;
+        }
+        public void valueChanged(ListSelectionEvent event) {
+            Course course = (Course)courseList.getSelectedValue();
+            model.setSelectedCourse(course);
+        }
+    }
+
 }

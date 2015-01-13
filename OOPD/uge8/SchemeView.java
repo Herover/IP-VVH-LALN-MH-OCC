@@ -14,7 +14,7 @@ public class SchemeView implements View {
     private JPanel panel;
     private JTable table;
     private JLabel header;
-    private Object rowData[][];
+
 
     public SchemeView(ScheduleModel model) {
         this.model = model;
@@ -44,37 +44,24 @@ public class SchemeView implements View {
         frame.dispose();
     }
 
-    public void dataSetter(String inputDay) {
-        int plus8 = 0;
-        for(int i = 0; i < 7; i++) {
-            plus8 = 0;
-            for(int j = 0; j <= 8; j++) {
-                plus8 = j + 8;
-                rowData[j][i] =
-                    getDay(Day.inputDay).getScheme().get(plus8.toString());
-            }
-        }
 
-
-    }
 
     public void update() {
         panel.removeAll();
 
-        Object columnNames[] = {"Monday", "Tuesday", "Wednesday", "Thursday",
-                                "Friday", "Saturday", "Sunday" };
-
-
-        for(int i = 0; i < 7; i++) {
-            dataSetter((String)columnNames[i]);
-        }
-
-
-        JTable table = new JTable(rowData, columnNames);
-
-        panel.add(table, BorderLayout.CENTER);
 
         Scheme scheme = model.getSelectedScheme();
+
+        String columnNames[] = {"Monday", "Tuesday", "Wednesday", "Thursday",
+                                "Friday", "Saturday", "Sunday" };
+
+        String[][] rowData = {{"1","2","3","4","5","6","7"}, {"1","2","3","4","5","6","7"}};
+
+
+
+
+
+
         if(scheme == null) {
             header = new JLabel("Vælg først et skema");
         }
@@ -83,6 +70,10 @@ public class SchemeView implements View {
 
 
         }
+        JTable table = new JTable(rowData, columnNames);
+
+        panel.add(table, BorderLayout.CENTER);
+
         panel.add(header, BorderLayout.PAGE_START);
 
         frame.revalidate();

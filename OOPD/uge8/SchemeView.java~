@@ -1,0 +1,23 @@
+import java.awt.*;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.event.*;
+
+class SchemeView extends View {
+
+    private ScheduleModel model;
+    private CourseController controller;
+
+    private JFrame frame;
+    private JPanel panel;
+
+    public SchemeView(ScheduleModel model) {
+        this.model = model;
+        model.attach(this);
+        initView();
+    }
+
+    private void initView() {
+        panel = new JPanel();

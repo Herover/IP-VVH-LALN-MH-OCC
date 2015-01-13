@@ -42,5 +42,8 @@ public class Main
         CourseView cv = new CourseView(model);
         cv.activate();
 
+        SchemeView sv = new SchemeView(model);
+        sv.activate();
+
     }
 }

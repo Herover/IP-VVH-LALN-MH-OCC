@@ -1,4 +1,4 @@
-import java.awt.*;
+/*import java.awt.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
@@ -52,3 +52,4 @@ public class SkemaView implements View {
         frame.repaint();
     }
 }
+*/

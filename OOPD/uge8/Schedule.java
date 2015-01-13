@@ -76,7 +76,6 @@ public class Schedule {
      */
     public void addSession(Session ses) {
         try{
-            System.out.println(ses.getCourse().getName()+ses.getClassroom().getName()+ses.getDay().toString()+ses.getTime().toString());
             Classroom room = ses.getClassroom();
             room.addSession(ses);
             Course co = ses.getCourse();

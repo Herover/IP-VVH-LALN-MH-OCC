@@ -42,7 +42,6 @@ public class DaySchedule {
      * Benytter addTime til at tilføje tiden.
      */
     public void addSession(Session ses) {
-        System.out.println("x"+ses.getCourse().getName());
         this.setTime(ses.getTime(), ses);
     }
 }

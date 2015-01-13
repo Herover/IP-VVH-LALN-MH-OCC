@@ -66,5 +66,4 @@ public class CourseController implements Controller {
             System.out.println(course.getName());
         }
     }
-
 }

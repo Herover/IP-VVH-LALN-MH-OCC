@@ -14,6 +14,9 @@ public class CourseView implements View {
     private JLabel header;
     private JList courseList;
     private JPanel panel;
+    private JPanel coursePanel;
+    private JPanel controlsPanel;
+    private JTextField newName;
 
     public CourseView(ScheduleModel model) {
         this.model = model;
@@ -22,18 +25,24 @@ public class CourseView implements View {
 
     private void initView() {
         panel = new JPanel();
+        panel.setLayout(new GridLayout(2, 0));
+        coursePanel = new JPanel();
+        controlsPanel = new JPanel();
+        controlsPanel.setLayout(new GridLayout(2, 0));
+        panel.add(coursePanel, BorderLayout.NORTH);
+        panel.add(controlsPanel, BorderLayout.SOUTH);
 
-        header = new JLabel("Kurser på kage");
-        panel.add(header);
+        newName = new JTextField();
+        controlsPanel.add(newName, BorderLayout.NORTH);
 
-        panel = new JPanel();
+        JButton createButton = new JButton("Opret ny");
+        controlsPanel.add(createButton,BorderLayout.SOUTH);
 
         frame = new JFrame("Kurser");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(200, 400);
 
         frame.setContentPane(panel);
-        frame.pack();
 
         controller = new CourseController(model, this);
 
@@ -50,13 +59,20 @@ public class CourseView implements View {
     }
 
     public void update() {
+        header = new JLabel("Kurser på kage");
+        coursePanel.add(header, BorderLayout.NORTH);
+
         ArrayList<Course> courses = model.getCourses();
         Course[] cArr = courses.toArray(new Course[courses.size()]);
         courseList = new JList<Course>(cArr);
         courseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         courseList.addListSelectionListener(new CourseSelection());
         JScrollPane scrollPane = new JScrollPane(courseList);
-        panel.add(scrollPane);
+        scrollPane.setPreferredSize(new Dimension(200, 200));
+        coursePanel.add(scrollPane, BorderLayout.SOUTH);
+
+        frame.revalidate();
+        frame.repaint();
     }
 
     class CourseSelection implements ListSelectionListener {

@@ -41,9 +41,15 @@ public class ScheduleModel implements Model {
         }
     }
 
+    public void addCourse(Course course) {
+        schedule.addCourse(course);
+        notifyObservers();
+        System.out.println(course);
+    }
+
     public void addCourses(ArrayList<Course> courses) {
         for(Course course: courses) {
-            schedule.addCourse(course);
+            addCourse(course);
         }
     }
 

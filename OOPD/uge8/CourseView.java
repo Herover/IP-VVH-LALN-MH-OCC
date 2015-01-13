@@ -16,10 +16,11 @@ public class CourseView implements View {
     private JPanel panel;
     private JPanel coursePanel;
     private JPanel controlsPanel;
-    private JTextField newName;
+    private JTextField newNameField;
 
     public CourseView(ScheduleModel model) {
         this.model = model;
+        model.attach(this);
         initView();
     }
 
@@ -32,11 +33,12 @@ public class CourseView implements View {
         panel.add(coursePanel, BorderLayout.NORTH);
         panel.add(controlsPanel, BorderLayout.SOUTH);
 
-        newName = new JTextField();
-        controlsPanel.add(newName, BorderLayout.NORTH);
+        newNameField = new JTextField();
+        controlsPanel.add(newNameField, BorderLayout.NORTH);
 
         JButton createButton = new JButton("Opret ny");
         controlsPanel.add(createButton,BorderLayout.SOUTH);
+
 
         frame = new JFrame("Kurser");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,7 +47,7 @@ public class CourseView implements View {
         frame.setContentPane(panel);
 
         controller = new CourseController(model, this);
-
+        controller.listenToCreate(createButton, newNameField);
     }
 
     public void activate() {
@@ -59,6 +61,8 @@ public class CourseView implements View {
     }
 
     public void update() {
+        coursePanel.removeAll();
+        System.out.println("update");
         header = new JLabel("Kurser på kage");
         coursePanel.add(header, BorderLayout.NORTH);
 
@@ -68,10 +72,11 @@ public class CourseView implements View {
         courseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         courseList.addListSelectionListener(new CourseSelection());
         JScrollPane scrollPane = new JScrollPane(courseList);
-        scrollPane.setPreferredSize(new Dimension(200, 200));
+        scrollPane.setPreferredSize(new Dimension(200, 150));
         coursePanel.add(scrollPane, BorderLayout.SOUTH);
-
         frame.revalidate();
+        courseList.revalidate();
+        courseList.repaint();
         frame.repaint();
     }
 

@@ -15,6 +15,7 @@ public class SchemeView implements View {
     private JTable table;
     private JLabel header;
 
+
     public SchemeView(ScheduleModel model) {
         this.model = model;
         model.attach(this);
@@ -30,6 +31,7 @@ public class SchemeView implements View {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         controller = new SchemeController(model, this);
+
     }
 
     public void activate() {
@@ -42,19 +44,36 @@ public class SchemeView implements View {
         frame.dispose();
     }
 
+
+
     public void update() {
         panel.removeAll();
 
-        table = new JTable();
-        panel.add(table, BorderLayout.CENTER);
 
         Scheme scheme = model.getSelectedScheme();
+
+        String columnNames[] = {"Monday", "Tuesday", "Wednesday", "Thursday",
+                                "Friday", "Saturday", "Sunday" };
+
+        String[][] rowData = {{"1","2","3","4","5","6","7"}, {"1","2","3","4","5","6","7"}};
+
+
+
+
+
+
         if(scheme == null) {
             header = new JLabel("Vælg først et skema");
         }
         else {
             header = new JLabel(scheme.getName());
+
+
         }
+        JTable table = new JTable(rowData, columnNames);
+
+        panel.add(table, BorderLayout.CENTER);
+
         panel.add(header, BorderLayout.PAGE_START);
 
         frame.revalidate();

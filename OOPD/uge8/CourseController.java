@@ -61,8 +61,9 @@ public class CourseController implements Controller {
             this.courseList = courseList;
         }
         public void valueChanged(ListSelectionEvent event) {
-            Course course = (Course)courseList.getSelectedValue();
-            model.setSelectedCourse(course);
+            Scheme course = (Scheme)courseList.getSelectedValue();
+            model.setSelectedScheme(course);
+            System.out.println(course.getName());
         }
     }
 

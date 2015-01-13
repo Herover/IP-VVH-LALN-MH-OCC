@@ -7,7 +7,7 @@ public class ScheduleModel implements Model {
 
     private Schedule schedule;
     private Set<Observer> setOfObservers;
-    private Course selectedCourse = null;
+    private Scheme selectedScheme = null;
 
     public ScheduleModel() {
         setOfObservers = new HashSet<Observer>();
@@ -67,12 +67,12 @@ public class ScheduleModel implements Model {
         }
     }
 
-    public void setSelectedCourse(Course course) {
-        selectedCourse = course;
+    public void setSelectedScheme(Scheme scheme) {
+        selectedScheme = scheme;
         notifyObservers();
     }
 
-    public Course getSelectedCourse() {
-        return selectedCourse;
+    public Scheme getSelectedScheme() {
+        return selectedScheme;
     }
 }

@@ -27,10 +27,10 @@ public class ScheduleModel implements Model {
         }
     }
 
-    public ArrayList<String> getCourses() {
-        ArrayList<String> courses = new ArrayList<String>();
+    public ArrayList<Course> getCourses() {
+        ArrayList<Course> courses = new ArrayList<Course>();
         for (Map.Entry<String, Course> entry : schedule.getCourses().entrySet()) {
-            courses.add(entry.getKey());
+            courses.add(entry.getValue());
         }
         return courses;
     }

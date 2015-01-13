@@ -1,6 +1,9 @@
 import java.awt.*;
 import javax.swing.*;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.event.*;
 
 public class CourseView implements View {
 
@@ -9,7 +12,7 @@ public class CourseView implements View {
 
     private JFrame frame;
     private JLabel header;
-    private JList cList;
+    private JList courseList;
     private JPanel panel;
 
     public CourseView(ScheduleModel model) {
@@ -23,7 +26,7 @@ public class CourseView implements View {
         header = new JLabel("Kurser på kage");
         panel.add(header);
 
-        JPanel = new JList();
+        panel = new JPanel();
 
         frame = new JFrame("Kurser");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,7 +40,6 @@ public class CourseView implements View {
     }
 
     public void activate() {
-
         frame.setVisible(true);
         update();
     }
@@ -48,16 +50,20 @@ public class CourseView implements View {
     }
 
     public void update() {
-
-        ArrayList<String> courses = model.getCourses();
-        cArr = courses.toArray(new Course[courses.size()]);
+        ArrayList<Course> courses = model.getCourses();
+        Course[] cArr = courses.toArray(new Course[courses.size()]);
         courseList = new JList<Course>(cArr);
         courseList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        courseList.addListenSelectionListener(new CourseSelection());
-        JScollPane scrollPane = new JScrollPane(courseList);
+        courseList.addListSelectionListener(new CourseSelection());
+        JScrollPane scrollPane = new JScrollPane(courseList);
         panel.add(scrollPane);
-        
+    }
 
+    class CourseSelection implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent event) {
+            Course course = (Course)courseList.getSelectedValue();
+            System.out.println(course.getName());
+        }
     }
 
 }

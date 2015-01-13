@@ -53,4 +53,8 @@ public class Scheme {
             System.out.println(entry.getKey());
         }
     }
+
+    public String toString() {
+        return this.getName();
+    }
 }

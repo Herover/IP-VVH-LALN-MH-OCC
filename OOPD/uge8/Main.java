@@ -30,16 +30,16 @@ public class Main
         }
         model.addCourses(courses);
 
-        ArrayList<Session> sessions = null;
+        ArrayList<String[]> sessions = null;
         try {
             sessions = FileReader.readSessions("skema.txt");
         }
         catch(Exception e) {
             System.out.println("Kunne ikke læse skema: "+e.getMessage());
         }
-
-        model.addSessions(sessions);
-
+        for(String[] sessionstr : sessions) {
+            model.addSession(sessionstr);
+        }
         CourseView cov = new CourseView(model);
         cov.activate();
 

@@ -56,12 +56,15 @@ public class FileReader {
      * @return ArrayList<Sessions> en liste af bestaende af sessions laest
      * fra filen fileName
      */
-    public static ArrayList<Session> readSessions(String fileName)
+    public static ArrayList<String[]> readSessions(String fileName)
         throws Exception {
         createScanner(fileName);
-        ArrayList<Session> sessions = new ArrayList<Session>();
+        ArrayList<String[]> sessions = new ArrayList<String[]>();
         while(scanner.hasNext()) {
-            sessions.add(Session.fromString(scanner.nextLine()));
+            String[] session = new String[4];
+            String line = scanner.nextLine();
+            session = line.split(" ");
+            sessions.add(session);
         }
         scanner.close();
         return sessions;

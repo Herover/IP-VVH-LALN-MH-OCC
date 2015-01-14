@@ -63,7 +63,6 @@ public class CourseController implements Controller {
         public void valueChanged(ListSelectionEvent event) {
             Scheme course = (Scheme)courseList.getSelectedValue();
             model.setSelectedScheme(course);
-            System.out.println(course.getName());
         }
     }
 }

@@ -43,5 +43,6 @@ public class DaySchedule {
      */
     public void addSession(Session ses) {
         this.setTime(ses.getTime(), ses);
+        System.out.println("adder"+ses.getCourse().getName());
     }
 }
